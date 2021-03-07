@@ -54,20 +54,20 @@ If you had to restart the resource, but don't want to rejoin, you can just use *
   - maxSpeed = *Speed limit of the vehicle (in meters per seconds)*
 
 ### teams
--"[team]"
- -  used = *If team is joinable or not*
- -  spawnpoint = *Location where all players will spawn after the fist countdown*
- -  ped_model = *ped_model* *Which kind of ped all players in this team will spawn*
- -  blip = *Map marker of this team*
+- "[team]"
+  -  used = *If team is joinable or not*
+  -  spawnpoint = *Location where all players will spawn after the fist countdown*
+  -  ped_model = *ped_model* *Which kind of ped all players in this team will spawn*
+  -  blip = *Map marker of this team*
 
 ### vehicles
 - "[team]"
- - spawnpoint = *Location where the vehicle will spawn*
- - spawnname = *Which kind of vehicle should spawn*
- - primarycolor = *Currently unused*
- - secondarycolor = *Currently unused*
- - livery = *Currently unused*
- - limit = *Maximum amount of vehicles can spawn*
+  - spawnpoint = *Location where the vehicle will spawn*
+  - spawnname = *Which kind of vehicle should spawn*
+  - primarycolor = *Currently unused*
+  - secondarycolor = *Currently unused*
+  - livery = *Currently unused*
+  - limit = *Maximum amount of vehicles can spawn*
 
 ### weapons
 - "[team]"
