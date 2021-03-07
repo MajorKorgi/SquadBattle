@@ -2,9 +2,9 @@ fx_version 'cerulean'
 game 'gta5'
 
 author 'Korgron'
-description 'ChaosBattle'
+description 'SquadBattle'
 
-version '0.0.1'
+version '0.1.0'
 
 client_scripts {
     'core/main_c.js', 
