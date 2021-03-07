@@ -8,7 +8,7 @@
             "sprite": 1,
             "color": 1,
             "scale": 1.5,
-            "name": "Bauarbeiter [red]"
+            "name": "[red]"
         }
     }, 
     "blue": {
@@ -20,7 +20,7 @@
             "sprite": 1,
             "color": 29,
             "scale": 1.5,
-            "name": "Manager [blue]"
+            "name": "[blue]"
         }
     }
 }
