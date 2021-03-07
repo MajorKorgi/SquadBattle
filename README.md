@@ -10,6 +10,24 @@ To leave a team, you just need to type the command **/leave**
 As an Admin, you are able to end the game via the **/EndGame** command. 
 If you had to restart the resource, but don't want to rejoin, you can just use **/reloadAll**, currently, this is only an admin command.
 
+## What comes next?
+- [ ] Deathmatch mode when all targets destroyed. No revive of players
+- [ ] Winner szene
+- [ ] Freecam for dead players or players without a team.
+- [ ] Vehicle targets option for driving only in a specified Area
+- [ ] New target type "Escort target"
+- [ ] UI 
+- [ ] Stuff for ambiente maybe?
+- [ ] Multiple game sessions?
+
+## Features
+- [x] Multiple teams (More than 2 possible)
+- [x] Godmode while waiting for game to start
+- [x] Team dependent targets
+- [x] After death, weapon drop. Adjustable in settings.json
+- [x] Team vehicles have a limit for no infinite spawning
+- [x] Targets can spawn multiple times for more vehicles / peds on the same spot
+
 ## Config
 ### settings
 - NeutralZone
@@ -39,7 +57,7 @@ If you had to restart the resource, but don't want to rejoin, you can just use *
 - type = *If this is a **ped** or a **vehicle***
 - spawnpoint = *Where the target will spawn*
 - MovesAround = *If the target is moving around*
-- team = *Which team is hatefull against this target*
+- team = *Which team is hateful against this target. or use "global" if all teams are hateful against this target*
 
 - Type: **PED**
   - WalkArea = *Area where the peds will walk. **MovesAround** need to be activated*
