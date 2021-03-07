@@ -1,0 +1,30 @@
+{
+    "NeutralZone": {
+        "spawnpoint": [686.42, 578.11, 130.46],
+        "ped_model": "a_m_y_skater_01",
+        "blip": {
+            "sprite": 1,
+            "color": 40,
+            "scale": 1.5,
+            "name": "Neutral Zone"
+        }
+    },
+    "countdown": {
+        "Minutes": 0,
+        "Seconds": 20,
+        "MinPlayersToStart": 1,
+        "PreMinutes": 0,
+        "PreSeconds": 10
+    },
+    "teams": {
+        "slots": 10,
+        "dropWeapons": true,
+        "health": 1000,
+        "healthLimit": 0.9999,
+        "armor": 100
+    },
+
+    "admins" : [
+        {"name": "Korgi", "identifier": "fivem:34245"}
+    ]
+}

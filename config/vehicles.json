@@ -1,0 +1,43 @@
+{
+    "red": [
+        {
+            "spawnpoint": [1069.04, -2154.44, 31.96, 9.89],
+            "spawnname": "forklift",
+            "primarycolor": 0,
+            "secondarycolor": 0,
+            "livery": 0,
+            "limit": 2,
+            "spawned": 0
+        },
+        {
+            "spawnpoint": [1082.45, -2129.44, 31.94, 9.89],
+            "spawnname": "bulldozer",
+            "primarycolor": 0,
+            "secondarycolor": 0,
+            "livery": 0,
+            "limit": 2,
+            "spawned": 0
+        }
+    ],
+
+    "blue": [
+        {
+            "spawnpoint": [786.38, -1625.47, 32.53, 335.24],
+            "spawnname": "limo2",
+            "primarycolor": 0,
+            "secondarycolor": 0,
+            "livery": 0,
+            "limit": 2,
+            "spawned": 0
+        },
+        {
+            "spawnpoint": [803.51, -1595.66, 32.33, 139.21],
+            "spawnname": "cog552",
+            "primarycolor": 0,
+            "secondarycolor": 0,
+            "livery": 0,
+            "limit": 2,
+            "spawned": 0
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "red": {
+        "used":true,
+        "spawnpoint": [1087.79, -2183.18, 30.93],
+        "active": 0,
+        "ped_model": "s_m_y_dockwork_01",
+        "blip": {
+            "sprite": 1,
+            "color": 1,
+            "scale": 1.5,
+            "name": "Bauarbeiter [red]"
+        }
+    }, 
+    "blue": {
+        "used":false,
+        "spawnpoint": [795.12, -1611.76, 31.41],
+        "active": 0,
+        "ped_model": "a_m_y_business_03",
+        "blip": {
+            "sprite": 1,
+            "color": 29,
+            "scale": 1.5,
+            "name": "Manager [blue]"
+        }
+    }
+}
