@@ -11,7 +11,7 @@ As an Admin, you are able to end the game via the **/EndGame** command.
 If you had to restart the resource, but don't want to rejoin, you can just use **/reloadAll**, currently, this is only an admin command.
 
 ## What comes next?
-- [ ] Deathmatch mode when all targets destroyed. No revive of players
+- [ ] Deathmatch mode when all targets are destroyed. No revive of players
 - [ ] Winner szene
 - [ ] Freecam for dead players or players without a team.
 - [ ] Vehicle targets option for driving only in a specified Area
