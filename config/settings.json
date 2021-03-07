@@ -6,7 +6,7 @@
             "sprite": 1,
             "color": 40,
             "scale": 1.5,
-            "name": "Neutral Zone"
+            "name": "Spawnzone"
         }
     },
     "countdown": {
@@ -25,6 +25,6 @@
     },
 
     "admins" : [
-        {"name": "Korgi", "identifier": "fivem:34245"}
+        {"name": "Username", "identifier": "fivem:123456"}
     ]
 }
