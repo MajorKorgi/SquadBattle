@@ -142,19 +142,19 @@ onNet('PreCountDownFinished', async () => {
 
 
     for (const key in globalTargets) {
-        let vehicleTargetName = "Fahrzeugziel"
-        let pedTargetName = "Personenziel"
-        let objectTargetName = "Objektziel"
+        let vehicleTargetName = "Vehicle target"
+        let pedTargetName = "Person target"
+        let objectTargetName = "Object target"
 
 
         if (globalTargets[key]["team"] == currentTeam) {
-            vehicleTargetName += " (hasserfüllt)"
-            pedTargetName += " (hasserfüllt)"
-            objectTargetName += " (hasserfüllt)"
+            vehicleTargetName += " (hateful)"
+            pedTargetName += " (hateful)"
+            objectTargetName += " (hateful)"
         } else {
-            vehicleTargetName += " (freundlich)"
-            pedTargetName += " (freundlich)"
-            objectTargetName += " (freundlich)"
+            vehicleTargetName += " (friendly)"
+            pedTargetName += " (friendly)"
+            objectTargetName += " (friendly)"
         }
         let target = globalTargets[key]
     
@@ -317,7 +317,7 @@ onNet("reloadAll", async () => {
 
 onNet("targetDestroyed", async () => {
     await Wait(500)
-    ShowMPMessage("~g~EVENT ABGESCHLOSSEN", "Ziel wurde erfolgreich ausradiert", 250)
+    ShowMPMessage("~g~EVENT COMPLETED", "Target successfully destroyed", 250)
     AnimpostfxPlay("MP_Celeb_Win", 5000, false)
     SetTimeScale(0.4)
     PlaySoundFrontend(-1, "CHECKPOINT_PERFECT", "HUD_MINI_GAME_SOUNDSET", 0)
