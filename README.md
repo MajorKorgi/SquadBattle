@@ -1,6 +1,9 @@
 # SquadBattle
  FiveM script/game mode for playing Team deathmatches
 
+## Important
+ You need to have **Onesync** activated. Otherwise, some functionalities won't work properly
+
 ## How to join a Team
 To join a team, you just need to type the command **/join [team]**
 - [team] is the index of your team set up in **teams.json** config file
