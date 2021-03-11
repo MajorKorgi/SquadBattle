@@ -299,8 +299,21 @@ onNet("removeTarget", async (Nid) => {
 
 onNet("setTargetBlips", async (Nid) => {
     let ped = NetworkGetEntityFromNetworkId(Nid)
-    AddBlipForEntity(ped)
+    let blip = AddBlipForEntity(ped)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentSubstringPlayerName("Enemy")
+    EndTextCommandSetBlipName(blip)
 })
+
+onNet("setTargetBlipsFriendly", async (Nid) => {
+    let ped = NetworkGetEntityFromNetworkId(Nid)
+    let blip = AddBlipForEntity(ped)
+    SetBlipColour(blip, 2)
+    BeginTextCommandSetBlipName('STRING')
+    AddTextComponentSubstringPlayerName("Companion")
+    EndTextCommandSetBlipName(blip)
+})
+
 
 onNet("reloadAll", async () => {
     let source = GetPlayerServerId(GetPlayerIndex())

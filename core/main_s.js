@@ -45,3 +45,15 @@ function GetDistanceBetweenCoords(x1,y1,z1,x2,y2,z2) {
     return Math.sqrt( dx * dx + dy * dy + dz * dz)
 }
 
+function GetPlayersIdentifier(source, identifier) {
+    let numIdentifers = GetNumPlayerIdentifiers(source)
+    let plid = undefined
+    for (let i=0;i<numIdentifers;i++) {
+        let playerIdentifier = GetPlayerIdentifier(source, i)
+        if (playerIdentifier.substr(0, identifier.length) == identifier) {
+            plid = playerIdentifier
+        }
+    }
+    return plid
+}
+

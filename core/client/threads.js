@@ -19,14 +19,14 @@ setTick(async () => {
         if (currentTeam == undefined) {
             for (const key in globalTeams) {
                 if (globalTeams[key]["used"]) {
-                    textTeams = textTeams +"\n - " + globalTeams[key]["blip"]["name"]  + " Slots:" + globalTeams[key]["active"] + "/" + globalSettings["teams"]["slots"] 
+                    textTeams = textTeams + `\n - [${key}] ${globalTeams[key]["blip"]["name"]} Slots: ${globalTeams[key]["active"]}/${globalSettings["teams"]["slots"] }`
                 }
             }
             AddTextComponentString(textTeams)
         } else {
             for (const key in globalPlayers) {
                 if (globalPlayers[key]["team"] == currentTeam) {
-                    textPlayers = textPlayers + "\n - " + globalPlayers[key]["name"]
+                    textPlayers = textPlayers + `\n - [${globalPlayers[key]["id"]}] ${globalPlayers[key]["name"]}`
                 }
             }
             AddTextComponentString(textPlayers)
