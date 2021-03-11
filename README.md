@@ -53,7 +53,7 @@ If you had to restart the resource, but don't want to rejoin, you can just use *
   - armor = *Amount of armor each player has (only 0 to 100)*
 
 - Admins
-  - All admins of the game mode, currently only with fivem:XXXXX identifier (other identifiers will be available later on)
+  - All admins of the game mode, currently only with fivem:XXXXX and steam:XXXXXXXXXXXX identifier (other identifiers will be available later on)
 
 ### targets
 - object_name = *Kind of vehicle/ped*
