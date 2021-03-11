@@ -50,7 +50,7 @@ RegisterCommand("leave", function(source, args, rawcommand) {
 
 RegisterCommand("EndGame", function(source){
    for (const key in settings["admins"]) {
-        if (GetPlayersIdentifier(source, "fivem:") == settings["admins"][key]["identifier"] || GetPlayersIdentifier(source, "steam:") == settings[key]["admins"][key]["identifier"]) {
+        if (GetPlayersIdentifier(source, "fivem:") == settings["admins"][key]["identifier"] || GetPlayersIdentifier(source, "steam:") == settings["admins"][key]["identifier"]) {
             GameIsActive = false
             emitNet("LeaveArea", -1)
             let players = GetPlayers()
