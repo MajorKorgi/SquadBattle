@@ -3,6 +3,7 @@ var globalPlayers = []
 var globalSettings = []
 var globalWeapons = []
 var globalTargets = []
+var globalMarkers = []
 
 var globalTargetBlipsPeds = []
 var globalTargetBlipsVehicles = []

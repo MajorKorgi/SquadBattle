@@ -102,12 +102,12 @@ setTick(async () => {
 
 setTick(async () => {
     if (activeNeutralArea) {
-        DrawMarker(1, globalSettings["NeutralZone"]["spawnpoint"][0], globalSettings["NeutralZone"]["spawnpoint"][1], globalSettings["NeutralZone"]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 150, 255, 255, 255, 255, false, false, 2, false, undefined, undefined, false)
+        DrawMarker(1, globalSettings["NeutralZone"]["spawnpoint"][0], globalSettings["NeutralZone"]["spawnpoint"][1], globalSettings["NeutralZone"]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 150, 255, 255, 255, 180, false, false, 2, false, undefined, undefined, false)
         SetEntityInvincible(PlayerPedId(), true)
     } else if (activePrepareArea) {
         for (const key in globalTeams) {
             if (globalTeams[key]["used"]) {
-                DrawMarker(1, globalTeams[key]["spawnpoint"][0], globalTeams[key]["spawnpoint"][1], globalTeams[key]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 150, 255, 255, 255, 255, false, false, 2, false, undefined, undefined, false)
+                DrawMarker(1, globalTeams[key]["spawnpoint"][0], globalTeams[key]["spawnpoint"][1], globalTeams[key]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 50, 255, 255, 255, 100, false, false, 2, false, undefined, undefined, false)
             }
        }
         SetEntityInvincible(PlayerPedId(), true)
@@ -115,26 +115,9 @@ setTick(async () => {
 })
 
 setTick(async () => {
-    for (const key in globalTargetBlipsPeds) {
-        let ped = globalTargetBlipsPeds[key]["name"]
-        let hash = globalTargetBlipsPeds[key]["group"]
-        SetPedRelationshipGroupHash(ped, hash)
-    }
-})
-
-setTick(async () => {
-    if (tehash != undefined) {
-        let ped = PlayerPedId()
-        SetPedRelationshipGroupHash(ped, tehash)
-
-        for (const key in globalTargetBlipsPeds) {
-            if (globalTargetBlipsPeds[key]["team"] == currentTeam) {
-                SetRelationshipBetweenGroups(5, tehash, tahash)
-                SetRelationshipBetweenGroups(5, tahash, tehash)
-            } else {
-                SetRelationshipBetweenGroups(1, tehash, tahash)
-                SetRelationshipBetweenGroups(1, tahash, tehash)
-            }
-        }
+    for (const key in globalMarkers) {
+        const coord = globalMarkers[key]
+        DrawMarker(2,coord[0],coord[1],coord[2] + 4, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 2.0, 2.0, 2.0, 50, 50, 204, 255, true, false, 2, true, undefined, undefined, false)
+        DrawMarker(1,coord[0],coord[1],coord[2] - 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 6.0, 6.0, 3.0, 50, 50, 204, 100, false, false, 2, true, undefined, undefined, false)
     }
 })

@@ -126,12 +126,10 @@ setTick(async () => {
 })
 
 setTick(async () => {
-    await Wait(1000)
     const players = GetPlayers()
     for(const key in players) {
         for (const key2 in teams) {
             for (const key3 in vehicles[key2]) {
-                await Wait(1000)
                 if ((typeof players[key]["id"]) == 'number') {
                     const ped = GetPlayerPed(players[key]["id"])
                     let Distance = 9999
@@ -142,7 +140,7 @@ setTick(async () => {
                             Distance = GetDistanceBetweenCoords(pedCoords[0], pedCoords[1], pedCoords[2], vehCoords[0], vehCoords[1], vehCoords[2])
                         }
                         
-                        if (Distance <= 100) {
+                        if (Distance <= 200) {
                             emitNet('SpawnVehicle', players[key]["id"], vehicles[key2][key3], key3)
                             await Wait(1000)
                         }
@@ -151,7 +149,7 @@ setTick(async () => {
                 }
             }
         }
-        
+
     }
 })
 setTick(async () => {
@@ -220,5 +218,24 @@ setTick(async () => {
         }
         
         
+    }
+})
+
+setTick(async () => {
+    let players = GetPlayers()
+    for (const key in players) {
+        let markers = []
+        for (const key2 in vehicles) {
+            for (const key3 in vehicles[key2]) {
+                const ped = GetPlayerPed(players[key]["id"])
+                const coords = GetEntityCoords(ped)
+                const Distance = GetDistanceBetweenCoords(coords[0], coords[1], coords[2], vehicles[key2][key3]["spawnpoint"][0], vehicles[key2][key3]["spawnpoint"][1], vehicles[key2][key3]["spawnpoint"][2])
+
+                if (Distance <= 200) {
+                    markers.push(vehicles[key2][key3]["spawnpoint"])
+                }
+            }
+        }
+        emitNet("SyncMarkerData", players[key]["id"], markers)
     }
 })

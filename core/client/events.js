@@ -84,6 +84,11 @@ onNet("SyncData", async (teams, players, settings, weapons, targets) => {
     globalWeapons = weapons
     globalTargets = targets
 })
+
+onNet("SyncMarkerData", async (markers) => {
+    globalMarkers = markers
+})
+
 onNet("StartCountdown", async (sec, min) => {
     await Wait(1000)
     countdownActive = true
