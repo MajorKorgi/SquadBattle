@@ -227,6 +227,7 @@ onNet("SpawnVehicleTarget", async (target) =>{
                 }
         
                 let ped = CreatePed(4, pedmodel, data["spawnpoint"][0], data["spawnpoint"][1], data["spawnpoint"][2] + 1, 0, true, true)
+                SetVehicleDoorsLockedForAllPlayers(vehicle, true)
                 SetPedRelationshipGroupHash(ped, tahash)
                 setRelationshipToEveryone(1, tahash)
                 TaskWarpPedIntoVehicle(ped, vehicle, -1)
@@ -236,9 +237,10 @@ onNet("SpawnVehicleTarget", async (target) =>{
                     TaskWarpPedIntoVehicle(ped, vehicle, -1)
                     await Wait(1)
                 }
-                    
-                TaskVehicleDriveWander(ped, vehicle,data["maxSpeed"], data["driveStyle"])
-    
+                if (target["vehicleamount"] > 1 || target["MovesAround"]) {
+                    TaskVehicleDriveWander(ped, vehicle,data["maxSpeed"], data["driveStyle"])
+                }  
+                
                 targetVehicles.push({team: target["team"], Nid: Nid, group: tahash})
             }) 
             await Wait(3500)
