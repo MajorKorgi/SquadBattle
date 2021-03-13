@@ -153,7 +153,6 @@ setTick(async () => {
     }
 })
 setTick(async () => {
-    await Wait(1000)
     let players = GetPlayers()
     for (const key in targets) {
         if (targets[key]["spawned"] == false) {
@@ -169,13 +168,12 @@ setTick(async () => {
     
                 if (Distance <= 100 && targets[key]["spawned"] == false) {
                     SpawnTargets(targets[key], players[key2], key)
-                    emitNet("SetTargetRelationships", -1, targets[key])
+                    
                 }
-                await Wait(100)
+                await Wait(500)
             }
             
         }
-        await Wait(100)
     }
 })
 

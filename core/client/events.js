@@ -62,11 +62,15 @@ onNet("onPlayerDeath", async () => {
         model: model
     });
 
+    
+
     await Wait(2000)
     for (const key in globalWeapons[currentTeam]) {
         let playerId = GetPlayerFromServerId(source)
         GiveWeaponToPed(GetPlayerPed(playerId), globalWeapons[currentTeam][key], 500)
     }
+    SetPedRelationshipGroupHash(ped, plhash)
+    setRelationshipToEveryone(1, plhash)
     SetEntityMaxHealth(PlayerPedId(), globalSettings["teams"]["health"])
     SetPlayerHealthRechargeMultiplier(PlayerId(), 20.0)
     SetPlayerHealthRechargeLimit(PlayerId(), globalSettings["teams"]["healthLimit"])
@@ -199,8 +203,9 @@ onNet("SetHudInfo", async (teamname) => {
         model: globalTeams[currentTeam]["ped_model"]
     });
 
-    [teretval, tehash] = AddRelationshipGroup(teamname)
-    setRelationshipToEveryone(1, tehash)
+    await Wait(2000)
+    SetPedRelationshipGroupHash(ped, plhash)
+    setRelationshipToEveryone(1, plhash)
 })
 
 onNet("SpawnVehicle", async (target, key) => {
@@ -211,26 +216,30 @@ onNet("SpawnVehicle", async (target, key) => {
     }
 })
 
-onNet("SpawnVehicleTarget", async (target) =>{
+onNet("SpawnVehicleTarget", async (target, id) =>{
         let vehmodel = target["object_name"]
-        let targetVehicles = []
+        
+        let [retval ,grouphash] = AddRelationshipGroup(id)
+        
         if (target["vehicleamount"] <= 1) {
             target["vehicleamount"] = 1
         }
+        let time = 500
         for (let i = 0; i < target["vehicleamount"]; i++) {         
             SpawnPlayerVehicle(vehmodel, target["spawnpoint"], target, async function(vehicle, Nid, data) {
                 let pedmodel = GetHashKey(data["driver"])
-                
+                let targetVehicles = []
                 RequestModel(pedmodel)
                 while (!HasModelLoaded(pedmodel)) {
                     await Wait(1)
                 }
         
                 let ped = CreatePed(4, pedmodel, data["spawnpoint"][0], data["spawnpoint"][1], data["spawnpoint"][2] + 1, 0, true, true)
+                let Nid2 = NetworkGetNetworkIdFromEntity(ped)
                 SetVehicleDoorsLockedForAllPlayers(vehicle, true)
-                SetPedRelationshipGroupHash(ped, tahash)
-                setRelationshipToEveryone(1, tahash)
                 TaskWarpPedIntoVehicle(ped, vehicle, -1)
+                SetPedRelationshipGroupHash(ped, grouphash)
+                setRelationshipToEveryone(1, grouphash)
         
                 
                 while (!IsPedInVehicle(ped, vehicle)) {
@@ -239,13 +248,14 @@ onNet("SpawnVehicleTarget", async (target) =>{
                 }
                 if (target["vehicleamount"] > 1 || target["MovesAround"]) {
                     TaskVehicleDriveWander(ped, vehicle,data["maxSpeed"], data["driveStyle"])
+                    time = 3500
                 }  
                 
-                targetVehicles.push({team: target["team"], Nid: Nid, group: tahash})
+                targetVehicles.push({team: target["team"], Nid: Nid, Nid2: Nid2, attack: target["attackTeam"]})
+                emitNet("syncTargets", targetVehicles)
             }) 
-            await Wait(3500)
+            await Wait(time)
         }
-    emitNet("syncTargets", targetVehicles)
 })
 
 
@@ -253,15 +263,10 @@ onNet("SpawnVehicleTarget", async (target) =>{
 /* onNet("SpawnObjectTarget", async (target) =>{
     let object = CreateObject(GetHashKey(target["object_name"]),target["spawnpoint"][0], target["spawnpoint"][1], target["spawnpoint"][2],true, true, false)
 }) */
-onNet("SetTargetRelationships", async (target) => {
-    if (target["team"] == currentTeam) {
-        SetRelationshipBetweenGroups(5, tahash, tehash)
-        SetRelationshipBetweenGroups(5, tehash, tahash)
-    }
-})
-onNet("SpawnPedTarget", async (target) =>{
+onNet("SpawnPedTarget", async (target, id) =>{
     let pedmodel = GetHashKey(target["object_name"])
     let targetPeds = []
+    let [retval ,grouphash] = AddRelationshipGroup(id)
     
     RequestModel(pedmodel)
     while (!HasModelLoaded(pedmodel)) {
@@ -274,10 +279,7 @@ onNet("SpawnPedTarget", async (target) =>{
     
     for (let i = 0; i < target["multipleAmount"]; i++) {
         let ped = CreatePed(4, pedmodel, target["spawnpoint"][0], target["spawnpoint"][1], target["spawnpoint"][2] + 1, 0, true, true)
-        
-
-        SetPedRelationshipGroupHash(ped, tahash)
-        setRelationshipToEveryone(1, tahash)
+    
         
         if(target["MovesAround"]) {
             TaskWanderStandard(ped, target["WalkArea"], 10)
@@ -286,13 +288,18 @@ onNet("SpawnPedTarget", async (target) =>{
             GiveWeaponToPed(ped, GetHashKey(target["weapon"]), 500, true)
         }
 
+        SetPedRelationshipGroupHash(ped, grouphash)
+        setRelationshipToEveryone(1, grouphash)
+
+        
+
         SetPedCombatAbility(ped, 2)
         SetPedCombatRange(ped, 2)
         SetPedCombatMovement(ped, 2)
         
         let Nid = NetworkGetNetworkIdFromEntity(ped)
         
-        targetPeds.push({team: target["team"], Nid: Nid, group: tahash})
+        targetPeds.push({team: target["team"], Nid: Nid, attack: target["attackTeam"]})
     }
 
     emitNet("syncTargets", targetPeds)
@@ -304,17 +311,45 @@ onNet("removeTarget", async (Nid) => {
     RemoveBlip(blip)
 })
 
-onNet("setTargetBlips", async (Nid) => {
-    let ped = NetworkGetEntityFromNetworkId(Nid)
+onNet("setTargetBlips", async (target) => {
+    let ped = NetworkGetEntityFromNetworkId(target["Nid"])
     let blip = AddBlipForEntity(ped)
+
+    let group = GetPedRelationshipGroupHash(ped)
+    let type = GetEntityType(ped)
+    
+    if (type == 2) {
+        let ped2 = NetworkGetEntityFromNetworkId(target["Nid2"])
+        group = GetPedRelationshipGroupHash(ped2)
+    }
+    if (target["attack"]) {
+        SetRelationshipBetweenGroups(5, group, plhash)
+        SetRelationshipBetweenGroups(5, plhash, group)
+    } else {
+        SetRelationshipBetweenGroups(4, group, plhash)
+        SetRelationshipBetweenGroups(4, plhash, group)
+    }
+    
     BeginTextCommandSetBlipName('STRING')
     AddTextComponentSubstringPlayerName("Enemy")
     EndTextCommandSetBlipName(blip)
 })
 
-onNet("setTargetBlipsFriendly", async (Nid) => {
-    let ped = NetworkGetEntityFromNetworkId(Nid)
+onNet("setTargetBlipsFriendly", async (target) => {
+    let ped = NetworkGetEntityFromNetworkId(target["Nid"])
     let blip = AddBlipForEntity(ped)
+
+    let group = GetPedRelationshipGroupHash(ped)
+    let type = GetEntityType(ped)
+    
+    if (type == 2) {
+        let ped2 = NetworkGetEntityFromNetworkId(target["Nid2"])
+        group = GetPedRelationshipGroupHash(ped2)
+    }
+
+    SetRelationshipBetweenGroups(1, group, plhash)
+    SetRelationshipBetweenGroups(1, plhash, group)
+
     SetBlipColour(blip, 2)
     BeginTextCommandSetBlipName('STRING')
     AddTextComponentSubstringPlayerName("Companion")

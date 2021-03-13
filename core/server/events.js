@@ -33,10 +33,11 @@ onNet("syncTargets", async (globalTargets) => {
 
     for (const key in players) {
         for (const key2 in globalTargets) {
+            await Wait(500)
             if (players[key]["team"] == globalTargets[key2]["team"] || globalTargets[key2]["team"] == "global") {
-                emitNet("setTargetBlips", players[key]["id"], globalTargets[key2]["Nid"])
+                emitNet("setTargetBlips", players[key]["id"], globalTargets[key2])
             } else {
-                emitNet("setTargetBlipsFriendly", players[key]["id"], globalTargets[key2]["Nid"])
+                emitNet("setTargetBlipsFriendly", players[key]["id"], globalTargets[key2])
             }
         }
     }

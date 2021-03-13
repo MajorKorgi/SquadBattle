@@ -10,11 +10,11 @@
         }
     },
     "countdown": {
-        "Minutes": 0,
-        "Seconds": 20,
-        "MinPlayersToStart": 1,
+        "Minutes": 1,
+        "Seconds": 0,
+        "MinPlayersToStart": 2,
         "PreMinutes": 0,
-        "PreSeconds": 10
+        "PreSeconds": 30
     },
     "teams": {
         "slots": 10,

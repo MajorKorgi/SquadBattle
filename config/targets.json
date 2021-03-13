@@ -4,19 +4,21 @@
         "type": "vehicle", 
         "spawnpoint": [967.42, -1963.8, 31.0, 59.57],
         "MovesAround":false,
+        "attackTeam": true,
         "driver": "s_m_y_ammucity_01",
         "driveStyle": 786492,
         "vehicleamount": 1,
         "maxSpeed": 20.0,
         "spawned": false,
-        "team": "red"
+        "team": "blue"
     },
     {
         "object_name": "s_m_y_ammucity_01",
         "type": "ped", 
         "spawnpoint": [935.84, -1811.07, 31.33, 216.55],
         "MovesAround":true,
-        "WalkArea": 10.0,
+        "attackTeam": true,
+        "WalkArea": 1.0,
         "multipleAmount": 5,
         "GiveWeapon": true,
         "weapon": "WEAPON_CARBINERIFLE",

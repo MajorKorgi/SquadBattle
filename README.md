@@ -61,6 +61,7 @@ If you had to restart the resource, but don't want to rejoin, you can just use *
 - spawnpoint = *Where the target will spawn*
 - MovesAround = *If the target is moving around*
 - team = *Which team is hateful against this target. or use "global" if all teams are hateful against this target*
+- attackTeam = *Enable/Disable attacking hateful team immediately*
 
 - Type: **PED**
   - WalkArea = *Area where the peds will walk. **MovesAround** need to be activated*

@@ -5,9 +5,6 @@ var globalWeapons = []
 var globalTargets = []
 var globalMarkers = []
 
-var globalTargetBlipsPeds = []
-var globalTargetBlipsVehicles = []
-var globalTargetBlipsObjects = []
 var currentTeam = undefined
 
 let countMinute = 0
@@ -17,18 +14,11 @@ let countdownActive = false
 let activeNeutralArea = false
 let activePrepareArea = false
 
-let globalCam = undefined
-let gloabelTargetPlayer = undefined
-
 let showStats = true
 
 let AllBlips =  []
 
-let tehash
-let teretval
-
-const [taretval, tahash] = AddRelationshipGroup("Targets")
-const [neretval, nehash] = AddRelationshipGroup("Neutral")
+const [plretval, plhash] = AddRelationshipGroup("PLAYER")
 
 
 on('onClientMapStart', async () => {
