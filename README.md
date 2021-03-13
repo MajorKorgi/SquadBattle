@@ -1,6 +1,9 @@
 # SquadBattle
  FiveM script/game mode for playing Team deathmatches
 
+[![License GNU-GPL v3](https://img.shields.io/github/license/Korgron/SquadBattle?style=for-the-badge)](https://github.com/Korgron/SquadBattle/blob/main/LICENSE "License")
+[![Lates release](https://img.shields.io/github/v/release/Korgron/SquadBattle?style=for-the-badge)](https://github.com/Korgron/SquadBattle/releases/latest)
+
 ## Important
  You need to have **Onesync** activated. Otherwise, some functionalities won't work properly
 
