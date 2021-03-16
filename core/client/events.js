@@ -227,25 +227,30 @@ onNet("SpawnVehicleTarget", async (target, id) =>{
         let time = 500
         for (let i = 0; i < target["vehicleamount"]; i++) {         
             SpawnPlayerVehicle(vehmodel, target["spawnpoint"], target, async function(vehicle, Nid, data) {
-                let pedmodel = GetHashKey(data["driver"])
                 let targetVehicles = []
-                RequestModel(pedmodel)
-                while (!HasModelLoaded(pedmodel)) {
-                    await Wait(1)
-                }
-        
-                let ped = CreatePed(4, pedmodel, data["spawnpoint"][0], data["spawnpoint"][1], data["spawnpoint"][2] + 1, 0, true, true)
-                let Nid2 = NetworkGetNetworkIdFromEntity(ped)
+                let Nid2 = undefined
                 SetVehicleDoorsLockedForAllPlayers(vehicle, true)
-                TaskWarpPedIntoVehicle(ped, vehicle, -1)
-                SetPedRelationshipGroupHash(ped, grouphash)
-                setRelationshipToEveryone(1, grouphash)
-        
-                
-                while (!IsPedInVehicle(ped, vehicle)) {
+                if (data["hasDriver"]) {
+                    let pedmodel = GetHashKey(data["driver"])
+
+                    RequestModel(pedmodel)
+                    while (!HasModelLoaded(pedmodel)) {
+                        await Wait(1)
+                    }
+            
+                    let ped = CreatePed(4, pedmodel, data["spawnpoint"][0], data["spawnpoint"][1], data["spawnpoint"][2] + 1, 0, true, true)
+                    Nid2 = NetworkGetNetworkIdFromEntity(ped)
+                    
                     TaskWarpPedIntoVehicle(ped, vehicle, -1)
-                    await Wait(1)
+                    SetPedRelationshipGroupHash(ped, grouphash)
+                    setRelationshipToEveryone(1, grouphash)
+                    
+                    while (!IsPedInVehicle(ped, vehicle)) {
+                        TaskWarpPedIntoVehicle(ped, vehicle, -1)
+                        await Wait(1)
+                    }
                 }
+                
                 if (target["vehicleamount"] > 1 || target["MovesAround"]) {
                     TaskVehicleDriveWander(ped, vehicle,data["maxSpeed"], data["driveStyle"])
                     time = 3500
@@ -318,7 +323,7 @@ onNet("setTargetBlips", async (target) => {
     let group = GetPedRelationshipGroupHash(ped)
     let type = GetEntityType(ped)
     
-    if (type == 2) {
+    if (type == 2 && target["Nid2"] != undefined) {
         let ped2 = NetworkGetEntityFromNetworkId(target["Nid2"])
         group = GetPedRelationshipGroupHash(ped2)
     }
@@ -342,7 +347,7 @@ onNet("setTargetBlipsFriendly", async (target) => {
     let group = GetPedRelationshipGroupHash(ped)
     let type = GetEntityType(ped)
     
-    if (type == 2) {
+    if (type == 2 && target["Nid2"] != undefined) {
         let ped2 = NetworkGetEntityFromNetworkId(target["Nid2"])
         group = GetPedRelationshipGroupHash(ped2)
     }

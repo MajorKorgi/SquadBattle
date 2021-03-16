@@ -2,7 +2,11 @@ var vehicles = require('./config/vehicles.json')
 var teams = require('./config/teams.json')
 var weapons = require('./config/weapons.json')
 var settings = require('./config/settings.json')
-var targets = require('./config/targets.json')
+
+var targets = []
+var pedtargets = require('./config/targets/pedtargets.json')
+var vehtargets = require('./config/targets/vehicletargets.json')
+
 
 var currActivePlayers = []
 
@@ -10,6 +14,13 @@ var TargetSessions = []
 
 var GameIsActive = false
 var PrepareTeams = false
+
+for (const key in pedtargets) {
+    targets.push(pedtargets[key])
+}
+for (const key in vehtargets) {
+    targets.push(vehtargets[key])
+}
 
 function PushPlayer(source) {
     currActivePlayers.push({id: source, name: GetPlayerName(source), active: false, dead: false, team: undefined})

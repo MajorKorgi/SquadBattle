@@ -1,0 +1,61 @@
+[
+    {
+        "object_name": "mixer2",
+        "type": "vehicle", 
+        "spawnpoint": [844.58, -1976.72, 30.34, 31.97],
+        "MovesAround":false,
+        "attackTeam": false,
+        "hasDriver": false,
+        "driver": "none",
+        "driveStyle": 0,
+        "vehicleamount": 1,
+        "maxSpeed": 0.0,
+        "spawned": false,
+        "team": "blue"
+    },
+
+    {
+        "object_name": "mixer2",
+        "type": "vehicle", 
+        "spawnpoint": [839.86, -1979.36, 30.34, 8.81],
+        "MovesAround":false,
+        "attackTeam": false,
+        "hasDriver": false,
+        "driver": "none",
+        "driveStyle": 0,
+        "vehicleamount": 1,
+        "maxSpeed": 0.0,
+        "spawned": false,
+        "team": "blue"
+    },
+
+    {
+        "object_name": "baller2",
+        "type": "vehicle", 
+        "spawnpoint": [954.31, -2010.85, 31.15, 54.12],
+        "MovesAround":false,
+        "attackTeam": false,
+        "hasDriver": false,
+        "driver": "none",
+        "driveStyle": 0,
+        "vehicleamount": 1,
+        "maxSpeed": 0.0,
+        "spawned": false,
+        "team": "red"
+    },
+
+    {
+        "object_name": "baller2",
+        "type": "vehicle", 
+        "spawnpoint": [856.4, -1992.65, 31.14, 113.36],
+        "MovesAround":false,
+        "attackTeam": false,
+        "hasDriver": false,
+        "driver": "none",
+        "driveStyle": 0,
+        "vehicleamount": 1,
+        "maxSpeed": 0.0,
+        "spawned": false,
+        "team": "red"
+    }
+]
