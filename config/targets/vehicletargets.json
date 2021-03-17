@@ -47,7 +47,7 @@
     {
         "object_name": "baller2",
         "type": "vehicle", 
-        "spawnpoint": [856.4, -1992.65, 31.14, 113.36],
+        "spawnpoint": [956.4, -1992.65, 31.14, 113.36],
         "MovesAround":false,
         "attackTeam": false,
         "hasDriver": false,

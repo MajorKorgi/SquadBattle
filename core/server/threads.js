@@ -130,7 +130,7 @@ setTick(async () => {
     for(const key in players) {
         for (const key2 in teams) {
             for (const key3 in vehicles[key2]) {
-                if ((typeof players[key]["id"]) == 'number') {
+                try {if ((typeof players[key]["id"]) == 'number') {
                     const ped = GetPlayerPed(players[key]["id"])
                     let Distance = 9999
                     if (ped != 0 && players[key]["active"] == true && teams[key2]["used"]) {
@@ -146,6 +146,8 @@ setTick(async () => {
                         }
                     } 
                     
+                }}
+                catch(err) {
                 }
             }
         }

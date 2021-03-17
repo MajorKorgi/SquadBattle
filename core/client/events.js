@@ -179,8 +179,8 @@ onNet('PreCountDownFinished', async () => {
             console.log(`TARGET: ${target["object_name"]} has no type`)
         }
         
-        AllBlips.push(blip)
         SetBlipSprite(blip, target["blip"]["sprite"])
+        AllBlips.push({"id": blip, "key": key})
         SetBlipDisplay(blip, 4)
         SetBlipScale(blip, target["blip"]["scale"])
         SetBlipColour(blip, target["blip"]["color"])
@@ -258,7 +258,12 @@ onNet("SpawnVehicleTarget", async (target, id) =>{
                 
                 targetVehicles.push({team: target["team"], Nid: Nid, Nid2: Nid2, attack: target["attackTeam"]})
                 emitNet("syncTargets", targetVehicles)
-            }) 
+            })
+            for (const key in AllBlips) {
+                if (AllBlips[key]["key"] == id) {
+                    RemoveBlip(AllBlips[key]["id"])
+                }   
+            }
             await Wait(time)
         }
 })
@@ -305,6 +310,11 @@ onNet("SpawnPedTarget", async (target, id) =>{
         let Nid = NetworkGetNetworkIdFromEntity(ped)
         
         targetPeds.push({team: target["team"], Nid: Nid, attack: target["attackTeam"]})
+    }
+    for (const key in AllBlips) {
+        if (AllBlips[key]["key"] == id) {
+            RemoveBlip(AllBlips[key]["id"])
+        }   
     }
 
     emitNet("syncTargets", targetPeds)
