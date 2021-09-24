@@ -168,7 +168,7 @@ setTick(async () => {
                     Distance = GetDistanceBetweenCoords(pedCoords[0], pedCoords[1], pedCoords[2], tarCoords[0], tarCoords[1], tarCoords[2])
                 }
     
-                if (Distance <= 100 && targets[key]["spawned"] == false) {
+                if (Distance <= 50 && targets[key]["spawned"] == false) {
                     SpawnTargets(targets[key], players[key2], key)
                     
                 }
@@ -209,15 +209,35 @@ setTick(async () => {
                     if (players[key3]["team"] == team) {
                         emitNet("targetDestroyed", players[key3]["id"])
                         TargetSessions.splice(key, 1)
+                        for (const key in TeamTargets) {
+                            if (TeamTargets[key] == team) {
+                                TeamTargets.splice(key, 1)
+                                break
+                            }
+                        }
                     }
                 }
             } else if (TargetSessions[key].length == 0) {
                 emitNet("targetDestroyed", -1)
                 TargetSessions.splice(key, 1)
+                for (const key in TeamTargets) {
+                    if (TeamTargets[key] == team) {
+                        TeamTargets.splice(key, 1)
+                        break
+                    }
+                }
             }
         }
         
         
+    }
+})
+
+setTick(async () => {
+    for (const key in TeamTargets) {
+        if (TeamTargets[key])  {
+            
+        }
     }
 })
 

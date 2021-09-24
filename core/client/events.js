@@ -155,29 +155,33 @@ onNet('PreCountDownFinished', async () => {
         let pedTargetName = "Person target"
         let objectTargetName = "Object target"
 
-
+        let color = 0
         if (globalTargets[key]["team"] == currentTeam) {
             vehicleTargetName += " (hateful)"
             pedTargetName += " (hateful)"
             objectTargetName += " (hateful)"
+            color = 1
+        
         } else {
             vehicleTargetName += " (friendly)"
             pedTargetName += " (friendly)"
             objectTargetName += " (friendly)"
+
+            color = 3
         }
         let target = globalTargets[key]
-    
         let blip = AddBlipForCoord(target["spawnpoint"][0], target["spawnpoint"][1], target["spawnpoint"][2])
         
-        if (target["type"] == "vehicle") {
-            target["blip"] = {"sprite": 1, "color": 27, "scale": 1.0, "name": vehicleTargetName}
-        } else if (target["type"] == "object") {
-            target["blip"] = {"sprite": 478 , "color": 21, "scale": 1.0, "name": objectTargetName}
-        } else if (target["type"] == "ped") {
-            target["blip"] = {"sprite": 1, "color": 73, "scale": 1.0, "name": pedTargetName}
-        } else {
-            console.log(`TARGET: ${target["object_name"]} has no type`)
+        switch (target["type"]) {
+            case "vehicle":target["blip"] = {"sprite": 1, "color": color, "scale": 1.0, "name": vehicleTargetName};break;
+            case "object":target["blip"] = {"sprite": 478 , "color": color, "scale": 1.0, "name": objectTargetName};break;
+            case "ped":target["blip"] = {"sprite": 1, "color": color, "scale": 1.0, "name": pedTargetName};break;
+        
+            default: console.log(`TARGET: ${target["object_name"]} has no type`);break;
         }
+        
+    
+        
         
         SetBlipSprite(blip, target["blip"]["sprite"])
         AllBlips.push({"id": blip, "key": key})
@@ -257,7 +261,7 @@ onNet("SpawnVehicleTarget", async (target, id) =>{
                 }  
                 
                 targetVehicles.push({team: target["team"], Nid: Nid, Nid2: Nid2, attack: target["attackTeam"]})
-                emitNet("syncTargets", targetVehicles)
+                emitNet("syncTargets", targetVehicles, target["team"])
             })
             for (const key in AllBlips) {
                 if (AllBlips[key]["key"] == id) {
@@ -317,7 +321,7 @@ onNet("SpawnPedTarget", async (target, id) =>{
         }   
     }
 
-    emitNet("syncTargets", targetPeds)
+    emitNet("syncTargets", targetPeds, target["team"])
 })
 
 onNet("removeTarget", async (Nid) => {

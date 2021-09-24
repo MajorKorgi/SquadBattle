@@ -11,6 +11,7 @@ var vehtargets = require('./config/targets/vehicletargets.json')
 var currActivePlayers = []
 
 var TargetSessions = []
+var TeamTargets = []
 
 var GameIsActive = false
 var PrepareTeams = false

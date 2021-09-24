@@ -6,6 +6,9 @@
         "MovesAround":false,
         "attackTeam": false,
         "WalkArea": 0.2,
+        "WalkPoints": [
+            {}
+        ],
         "multipleAmount": 3,
         "GiveWeapon": true,
         "weapon": "WEAPON_WRENCH",
@@ -20,6 +23,9 @@
         "MovesAround":false,
         "attackTeam": false,
         "WalkArea": 0.2,
+        "WalkPoints": [
+            {}
+        ],
         "multipleAmount": 3,
         "GiveWeapon": true,
         "weapon": "WEAPON_WRENCH",
@@ -34,6 +40,9 @@
         "MovesAround":false,
         "attackTeam": false,
         "WalkArea": 0.2,
+        "WalkPoints": [
+            {}
+        ],
         "multipleAmount": 3,
         "GiveWeapon": true,
         "weapon": "WEAPON_NIGHTSTICK",
@@ -48,6 +57,9 @@
         "MovesAround":false,
         "attackTeam": false,
         "WalkArea": 0.2,
+        "WalkPoints": [
+            {}
+        ],
         "multipleAmount": 3,
         "GiveWeapon": true,
         "weapon": "WEAPON_NIGHTSTICK",

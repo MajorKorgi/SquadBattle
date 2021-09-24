@@ -34,6 +34,15 @@ on('onClientMapStart', async () => {
     activeNeutralArea = true
 })
 
+onNet('playerSpawned', function() {
+    setTick(async () => {
+        let playerPed = GetPlayerPed(-1)
+        
+        NetworkSetFriendlyFireOption(true)
+        SetCanAttackFriendly(playerPed, true, true)
+    })
+})
+
 async function SpawnPlayerVehicle(modelName, coords, data, cb) {
     RequestModel(modelName)
     let vehicleName = GetDisplayNameFromVehicleModel(modelName)

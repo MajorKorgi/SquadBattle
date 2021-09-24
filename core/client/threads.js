@@ -46,6 +46,7 @@ setTick(async () => {
         SetTextEdge(1, 0, 0, 0, 255)
         SetTextDropShadow()
         SetTextOutline()
+        SetTextCentre(true)
         SetTextEntry("STRING")
         countMinute = countMinute.toLocaleString('en-US', {
             minimumIntegerDigits: 2,
@@ -56,10 +57,15 @@ setTick(async () => {
             minimumIntegerDigits: 2,
             useGrouping: false
         })
-        
-        AddTextComponentString(`${countMinute}:${countSecond}`)
+        if (activeNeutralArea) {
+            AddTextComponentString(`Countdown\n${countMinute}:${countSecond}`)
+        } else if (activePrepareArea) {
+            AddTextComponentString(`Prepare for Battle\n${countMinute}:${countSecond}`)
+        } else {
+            AddTextComponentString(`${countMinute}:${countSecond}`)
+        }
     
-        EndTextCommandDisplayText(0.45, 0.1)
+        EndTextCommandDisplayText(0.5, 0.1)
     }
 })
 

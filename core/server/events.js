@@ -25,9 +25,10 @@ onNet("VehicleWasSpawned", async (currentTeam, target, key) => {
     vehicles[currentTeam][key]["spawned"] += 1
 })
 
-onNet("syncTargets", async (globalTargets) => {
+onNet("syncTargets", async (globalTargets, team) => {
 
     TargetSessions.push(globalTargets)
+    TeamTargets.push(team)
     
     let players = GetPlayers()
 

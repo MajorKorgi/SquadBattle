@@ -5,7 +5,7 @@
         "active": 0,
         "ped_model": "s_m_y_dockwork_01",
         "blip": {
-            "sprite": 1,
+            "sprite": 176,
             "color": 1,
             "scale": 1.5,
             "name": "Worker"
@@ -17,8 +17,8 @@
         "active": 0,
         "ped_model": "a_m_y_business_03",
         "blip": {
-            "sprite": 1,
-            "color": 29,
+            "sprite": 176,
+            "color": 3,
             "scale": 1.5,
             "name": "Business"
         }
