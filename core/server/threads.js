@@ -2,24 +2,25 @@ setTick(async () => {
     await Wait(500)
 
     const players = GetPlayers()
+    if (players.length == 0) {return}
 
-    if (players.length != 0) {
-        for (const key in players) {
-         if (players[key]["active"]) {
-             let source = players[key]["id"]
-             let ped = GetPlayerPed(source)
-             let health = GetEntityHealth(ped)
 
-             if (health == 0 && players[key]["dead"] == false && DoesEntityExist(ped)) {
-                players[key]["dead"] = true
-                emitNet("onPlayerDeath", source)
-             }
+    for (const key in players) {
+        if (!players[key]["active"]) {continue}
+        
+        let source = players[key]["id"]
+        let ped = GetPlayerPed(source)
+        let health = GetEntityHealth(ped)
+        if (!DoesEntityExist(ped)) {continue}
+        
+        if (health == 0 && players[key]["dead"] == false) {
+        players[key]["dead"] = true
+        emitNet("onPlayerDeath", source)
+        }
 
-             if (health > 0 && players[key]["dead"] == true && DoesEntityExist(ped)) {
-                players[key]["dead"] = false
-                emitNet("onPlayerRevive", source)
-            }
-         }
+        if (health > 0 && players[key]["dead"] == true) {
+        players[key]["dead"] = false
+        emitNet("onPlayerRevive", source)
         }
     }
     
@@ -35,70 +36,66 @@ setTick(async () => {
     let amountofteamsplayers = 0
     let amountofteams = 0
     for (const key in teams) {
-        if (teams[key]["used"]) {
-            amountofteams = amountofteams + 1
-            amountofteamsplayers = amountofteamsplayers + teams[key]["active"]
-        }
-        
-        if (teams[key]["active"] >= settings["countdown"]["MinPlayersToStart"] && teams[key]["used"]) {
-            playersInTeam = true
-        } else if (teams[key]["used"]) {
-            playersInTeam = false
-            break
-        }
-        
+        if (!teams[key]["used"]) {continue}
 
-        
+        amountofteams = amountofteams + 1
+        amountofteamsplayers = amountofteamsplayers + teams[key]["active"]
+
+
+        if (teams[key]["active"] < settings["countdown"]["MinPlayersToStart"]) {continue}
+        playersInTeam = true
     }
+
     amountofteamsplayers = amountofteamsplayers / amountofteams
 
-    
-    if (playersInTeam && !GameIsActive) {
-        let tempMinute = settings["countdown"]["Minutes"]
-        let tempSecond = settings["countdown"]["Seconds"]
+    if (!playersInTeam) {return}
+    if (GameIsActive) {return}
 
-        emitNet("StartCountdown", -1, tempMinute, tempSecond)
-        let fulltime = tempMinute*60+tempSecond
-        for (let i=0; i<fulltime; i++) {
-            if (!GameIsActive && playersInTeam && amountofteamsplayers<settings["teams"]["slots"]) {
-                if (tempSecond <= 0 && tempMinute != 0) {
-                    tempSecond = 59;
-                    tempMinute = tempMinute - 1
-                    await Wait(1000)
-                } else if (tempSecond != 0){
-                    tempSecond--;
-                    await Wait(1000)
-                }
+    let tempMinute = settings["countdown"]["Minutes"]
+    let tempSecond = settings["countdown"]["Seconds"]
 
-                emitNet("UpdateCountdown", -1, tempMinute, tempSecond)
+    emitNet("StartCountdown", -1, tempMinute, tempSecond)
+    let fulltime = tempMinute*60+tempSecond
+    for (let i=0; i<fulltime; i++) {
+        if (!GameIsActive && playersInTeam && amountofteamsplayers<settings["teams"]["slots"]) {
+            if (tempSecond <= 0 && tempMinute != 0) {
+                tempSecond = 59;
+                tempMinute = tempMinute - 1
+                await Wait(1000)
+            } else if (tempSecond != 0){
+                tempSecond--;
+                await Wait(1000)
             }
-            amountofteams = 0
-            amountofteamsplayers = 0
-            for (const key in teams) {
-                if (teams[key]["used"]) {
-                    amountofteams = amountofteams + 1
-                    amountofteamsplayers = amountofteamsplayers + teams[key]["active"]
-                }
-                
-                if (teams[key]["active"] >= settings["countdown"]["MinPlayersToStart"] && teams[key]["used"]) {
-                    playersInTeam = true
-                } else if (teams[key]["used"]) {
-                    playersInTeam = false
-                    break
-                }
-            }
-            amountofteamsplayers = amountofteamsplayers / amountofteams
+
+            emitNet("UpdateCountdown", -1, tempMinute, tempSecond)
         }
-
-        await Wait(1000)
-        emitNet("CountDownFinished", -1)
-        GameIsActive = true
-        PrepareTeams = true
+        amountofteams = 0
+        amountofteamsplayers = 0
+        for (const key in teams) {
+            if (teams[key]["used"]) {
+                amountofteams = amountofteams + 1
+                amountofteamsplayers = amountofteamsplayers + teams[key]["active"]
+            }
+            
+            if (teams[key]["active"] >= settings["countdown"]["MinPlayersToStart"] && teams[key]["used"]) {
+                playersInTeam = true
+            } else if (teams[key]["used"]) {
+                playersInTeam = false
+                break
+            }
+        }
+        amountofteamsplayers = amountofteamsplayers / amountofteams
     }
+
+    await Wait(1000)
+    emitNet("CountDownFinished", -1)
+    GameIsActive = true
+    PrepareTeams = true
 })
 
 setTick(async () => {
-    if (GameIsActive && PrepareTeams) {
+    if (!GameIsActive) {return}
+    if (!PrepareTeams) {return}
         let tempMinute = settings["countdown"]["PreMinutes"]
         let tempSecond = settings["countdown"]["PreSeconds"]
 
@@ -122,7 +119,6 @@ setTick(async () => {
         emitNet("PreCountDownFinished", -1)
         GameIsActive = true
         PrepareTeams = false
-    }
 })
 
 setTick(async () => {
