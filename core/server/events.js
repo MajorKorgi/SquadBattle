@@ -43,3 +43,46 @@ onNet("syncTargets", async (globalTargets, team) => {
         }
     }
 })
+
+onNet("sb:jointeam", (team) => {
+    let players = GetPlayers()
+    if (!GameIsActive) {
+        for (const key in players) {
+            if (players[key]["id"] == source && players[key]["active"] == false) {
+                players[key]["active"] = true
+                let player = source
+    
+    
+                for (const key2 in teams) {
+                    if (team == key2 && (teams[key2]["active"] != settings["teams"]["slots"]) && teams[key2]["used"]) {
+                        players[key]["team"] = key2
+                        emitNet("SetHudInfo", player, key2)
+                        teams[key2]["active"] = teams[key2]["active"] + 1
+                    }
+                }
+                emitNet("SetMapBlips", player, teams)
+            }
+        }
+    } else {
+        //emitNet("ShowMessage", source, "Game is currently active, you can't join a team")
+    }
+})
+
+onNet("sb:leaveteam", () => {
+    let player = source
+    let players = GetPlayers()
+
+    for (const key in players) {
+        
+        if (players[key]["id"] == player) {
+            for (const key2 in teams) {
+                if (players[key]["team"] == key2) {
+                    teams[key2]["active"] = teams[key2]["active"] - 1
+                }
+            }
+            players[key]["active"] = false
+            players[key]["team"] = undefined
+            emitNet("LeaveArea", player)
+        }
+    }
+})

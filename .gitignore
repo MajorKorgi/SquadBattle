@@ -51,3 +51,7 @@ Thumbs.db
 
 *.bak
 
+# Added by Korgron
+build.js
+.yarn.installed
+yarn.lock

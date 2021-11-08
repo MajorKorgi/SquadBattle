@@ -1,0 +1,22 @@
+{
+  "name": "squadbattle",
+  "version": "1.0.0",
+  "description": "FiveM script/game mode for playing Team deathmatches",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Korgron/SquadBattle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Korgron/SquadBattle/issues"
+  },
+  "homepage": "https://github.com/Korgron/SquadBattle#readme",
+  "dependencies": {
+    "fivem-js": "^1.5.2"
+  }
+}

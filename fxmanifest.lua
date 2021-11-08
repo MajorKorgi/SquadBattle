@@ -20,3 +20,9 @@ server_scripts {
     'core/server/*.js',
 }
 
+dependencys {
+    'webpack',
+    'yarn'
+}
+
+webpack_config 'webpack.config.js'
