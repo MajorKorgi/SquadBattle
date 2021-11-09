@@ -105,7 +105,6 @@ onNet("sb:endgame", (source) => {
 })
 
 onNet("sb:reloadAll", (source) => {
-    console.log(source)
     if (Squad.isAdmin(source)) {
         emitNet("reloadAll", -1)
     }

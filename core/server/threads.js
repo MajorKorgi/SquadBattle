@@ -252,6 +252,6 @@ setTick(async () => {
                 }
             }
         }
-        //emitNet("SyncMarkerData", players[key]["id"], markers)
+        emitNet("SyncMarkerData", players[key]["id"], markers)
     }
 })

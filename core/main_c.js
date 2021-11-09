@@ -49,7 +49,6 @@ onNet('playerSpawned', function() {
 
 onNet("sb:isadmin", (isAdminBool) => {
     Squad.Player.isAdmin = isAdminBool
-    console.log(Squad.Player.isAdmin)
 })
 
 async function SpawnPlayerVehicle(modelName, coords, data, cb) {

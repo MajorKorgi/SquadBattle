@@ -91,7 +91,6 @@ function InitializeMenu() {
         }
     }
 
-    console.log(Squad.Player.isAdmin)
     if (Squad.Player.isAdmin) {
         AdminItem.enabled = true
     } else {
