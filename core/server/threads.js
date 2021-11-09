@@ -28,7 +28,7 @@ setTick(async () => {
 
 setTick(async () => {
     await Wait(1000)
-    emitNet("SyncData", -1, teams, currActivePlayers, settings, weapons, targets)
+    emitNet("SyncData", -1, teams, Squad.Players, settings, weapons, targets)
 })
 
 setTick(async () => {
@@ -49,7 +49,7 @@ setTick(async () => {
     amountofteamsplayers = amountofteamsplayers / amountofteams
 
     if (!playersInTeam) {return}
-    if (GameIsActive) {return}
+    if (Squad.Session.Active) {return}
 
     let tempMinute = settings["countdown"]["Minutes"]
     let tempSecond = settings["countdown"]["Seconds"]
@@ -57,7 +57,7 @@ setTick(async () => {
     emitNet("StartCountdown", -1, tempMinute, tempSecond)
     let fulltime = tempMinute*60+tempSecond
     for (let i=0; i<fulltime; i++) {
-        if (!GameIsActive && playersInTeam && amountofteamsplayers<settings["teams"]["slots"]) {
+        if (!Squad.Session.Active && playersInTeam && amountofteamsplayers<settings["teams"]["slots"]) {
             if (tempSecond <= 0 && tempMinute != 0) {
                 tempSecond = 59;
                 tempMinute = tempMinute - 1
@@ -89,20 +89,20 @@ setTick(async () => {
 
     await Wait(1000)
     emitNet("CountDownFinished", -1)
-    GameIsActive = true
-    PrepareTeams = true
+    Squad.Session.Active = true
+    Squad.Session.Preparing = true
 })
 
 setTick(async () => {
-    if (!GameIsActive) {return}
-    if (!PrepareTeams) {return}
+    if (!Squad.Session.Active) {return}
+    if (!Squad.Session.Preparing) {return}
         let tempMinute = settings["countdown"]["PreMinutes"]
         let tempSecond = settings["countdown"]["PreSeconds"]
 
         emitNet("StartCountdown", -1, tempMinute, tempSecond)
         let fulltime = tempMinute*60+tempSecond
         for (let i=0; i<fulltime; i++) {
-            if (GameIsActive && PrepareTeams) {
+            if (Squad.Session.Active && Squad.Session.Preparing) {
                 if (tempSecond <= 0 && tempMinute != 0) {
                     tempSecond = 59;
                     tempMinute = tempMinute - 1
@@ -117,8 +117,8 @@ setTick(async () => {
 
         await Wait(1000)
         emitNet("PreCountDownFinished", -1)
-        GameIsActive = true
-        PrepareTeams = false
+        Squad.Session.Active = true
+        Squad.Session.Preparing = false
 })
 
 setTick(async () => {
@@ -252,6 +252,6 @@ setTick(async () => {
                 }
             }
         }
-        emitNet("SyncMarkerData", players[key]["id"], markers)
+        //emitNet("SyncMarkerData", players[key]["id"], markers)
     }
 })

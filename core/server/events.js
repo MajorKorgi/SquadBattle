@@ -7,16 +7,18 @@ on("playerConnecting",async (name, setKickReason, deferrals) => {
     CancelEvent() */
 })
 
-onNet("PushPlayer", async (source) => {
+onNet("PushPlayer", (source) => {
     PushPlayer(source)
+    const isadmin = Squad.isAdmin(source)
+    emitNet("sb:isadmin", source, isadmin)
 })
 
 on("playerDropped", (reason) => {
-    for (const key in currActivePlayers) {
-        if (currActivePlayers[key]["id"] == source) {
-            let team = currActivePlayers[key]["team"]
+    for (const key in Squad.Players) {
+        if (Squad.Players[key]["id"] == source) {
+            let team = Squad.Players[key]["team"]
             teams[team]["active"] -= 1
-            currActivePlayers.splice(key, 1)
+            Squad.Players.splice(key, 1)
         }
     }
 });
@@ -46,7 +48,7 @@ onNet("syncTargets", async (globalTargets, team) => {
 
 onNet("sb:jointeam", (team) => {
     let players = GetPlayers()
-    if (!GameIsActive) {
+    if (!Squad.Session.Active) {
         for (const key in players) {
             if (players[key]["id"] == source && players[key]["active"] == false) {
                 players[key]["active"] = true
@@ -84,5 +86,27 @@ onNet("sb:leaveteam", () => {
             players[key]["team"] = undefined
             emitNet("LeaveArea", player)
         }
+    }
+})
+
+onNet("sb:endgame", (source) => {
+    if (Squad.isAdmin(source)) {
+        Squad.Session.Active = false
+        emitNet("LeaveArea", -1)
+        let players = GetPlayers()
+        for (const key in players) {
+            players[key]["active"] = false
+            players[key]["team"] = undefined
+        }
+        for (const key2 in teams) {
+            teams[key2]["active"] = 0
+        }
+    }
+})
+
+onNet("sb:reloadAll", (source) => {
+    console.log(source)
+    if (Squad.isAdmin(source)) {
+        emitNet("reloadAll", -1)
     }
 })

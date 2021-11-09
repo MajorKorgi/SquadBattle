@@ -7,14 +7,21 @@ var targets = []
 var pedtargets = require('./config/targets/pedtargets.json')
 var vehtargets = require('./config/targets/vehicletargets.json')
 
+var Squad = new Object()
 
-var currActivePlayers = []
+Squad.Session = new Object()
+Squad.Session.Active = false
+Squad.Session.Preparing = false
+
+Squad.Session.Targets = new Object()
+Squad.Session.Targets.Ped = []
+Squad.Session.Targets.Vehicle = []
+Squad.Session.Targets.Object = []
+
+Squad.Players = []
 
 var TargetSessions = []
 var TeamTargets = []
-
-var GameIsActive = false
-var PrepareTeams = false
 
 for (const key in pedtargets) {
     targets.push(pedtargets[key])
@@ -23,12 +30,23 @@ for (const key in vehtargets) {
     targets.push(vehtargets[key])
 }
 
+Squad.isAdmin = function(plsource) {
+    for (const key in settings["admins"]) {
+        if (GetPlayersIdentifier(plsource, "fivem:") == settings["admins"][key]["identifier"] || GetPlayersIdentifier(plsource, "steam:") == settings["admins"][key]["identifier"]) {
+            return true
+        }
+   }
+   return false
+}
+
+
+
 function PushPlayer(source) {
-    currActivePlayers.push({id: source, name: GetPlayerName(source), active: false, dead: false, team: undefined})
+    Squad.Players.push({id: source, name: GetPlayerName(source), active: false, dead: false, team: undefined})
 }
 
 function GetPlayers() {
-    return currActivePlayers
+    return Squad.Players
 }
 
 async function SpawnTargets(target, player, targetId) {

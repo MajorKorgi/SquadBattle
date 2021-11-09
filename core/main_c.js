@@ -5,6 +5,10 @@ var globalWeapons = []
 var globalTargets = []
 var globalMarkers = []
 
+Squad = new Object()
+Squad.Player = new Object()
+Squad.Player.isAdmin = false
+
 var currentTeam = undefined
 
 let countMinute = 0
@@ -41,6 +45,11 @@ onNet('playerSpawned', function() {
         NetworkSetFriendlyFireOption(true)
         SetCanAttackFriendly(playerPed, true, true)
     })
+})
+
+onNet("sb:isadmin", (isAdminBool) => {
+    Squad.Player.isAdmin = isAdminBool
+    console.log(Squad.Player.isAdmin)
 })
 
 async function SpawnPlayerVehicle(modelName, coords, data, cb) {
