@@ -1,6 +1,4 @@
-setTick(async () => {
-    await Wait(500)
-
+setInterval(async () => {
     const players = GetPlayers()
     if (players.length == 0) {return}
 
@@ -24,12 +22,11 @@ setTick(async () => {
         }
     }
     
-})
+}, 500)
 
-setTick(async () => {
-    await Wait(1000)
+setInterval(() => {
     emitNet("SyncData", -1, teams, Squad.Players, settings, weapons, targets)
-})
+}, 1000)
 
 setTick(async () => {
     let playersInTeam = false
@@ -96,29 +93,30 @@ setTick(async () => {
 setTick(async () => {
     if (!Squad.Session.Active) {return}
     if (!Squad.Session.Preparing) {return}
-        let tempMinute = settings["countdown"]["PreMinutes"]
-        let tempSecond = settings["countdown"]["PreSeconds"]
+    
+    let tempMinute = settings["countdown"]["PreMinutes"]
+    let tempSecond = settings["countdown"]["PreSeconds"]
 
-        emitNet("StartCountdown", -1, tempMinute, tempSecond)
-        let fulltime = tempMinute*60+tempSecond
-        for (let i=0; i<fulltime; i++) {
-            if (Squad.Session.Active && Squad.Session.Preparing) {
-                if (tempSecond <= 0 && tempMinute != 0) {
-                    tempSecond = 59;
-                    tempMinute = tempMinute - 1
-                    await Wait(1000)
-                } else if (tempSecond != 0){
-                    tempSecond--;
-                    await Wait(1000)
-                }
-                emitNet("UpdateCountdown", -1, tempMinute, tempSecond)
+    emitNet("StartCountdown", -1, tempMinute, tempSecond)
+    let fulltime = tempMinute*60+tempSecond
+    for (let i=0; i<fulltime; i++) {
+        if (Squad.Session.Active && Squad.Session.Preparing) {
+            if (tempSecond <= 0 && tempMinute != 0) {
+                tempSecond = 59;
+                tempMinute = tempMinute - 1
+                await Wait(1000)
+            } else if (tempSecond != 0){
+                tempSecond--;
+                await Wait(1000)
             }
+            emitNet("UpdateCountdown", -1, tempMinute, tempSecond)
         }
+    }
 
-        await Wait(1000)
-        emitNet("PreCountDownFinished", -1)
-        Squad.Session.Active = true
-        Squad.Session.Preparing = false
+    await Wait(1000)
+    emitNet("PreCountDownFinished", -1)
+    Squad.Session.Active = true
+    Squad.Session.Preparing = false
 })
 
 setTick(async () => {
@@ -229,15 +227,15 @@ setTick(async () => {
     }
 })
 
-setTick(async () => {
+/* setTick(async () => {
     for (const key in TeamTargets) {
         if (TeamTargets[key])  {
             
         }
     }
-})
+}) */
 
-setTick(async () => {
+setInterval(async () => {
     let players = GetPlayers()
     for (const key in players) {
         let markers = []
@@ -254,4 +252,28 @@ setTick(async () => {
         }
         emitNet("SyncMarkerData", players[key]["id"], markers)
     }
+}, 1000)
+
+setTick(() => {
+    if (!Squad.Players.length) {return}
+    if (!Squad.Session.Active) {return}
+
+    for (const key in Squad.Players) {
+        const val = Squad.Players[key]
+        if (val.team != undefined) {
+            return
+        }
+    }
+
+    Squad.Session.Active = false
+    Squad.Session.Preparing = false
+    emitNet("LeaveArea", -1)
+    for (const key in Squad.Players) {
+        Squad.Players[key]["active"] = false
+        Squad.Players[key]["team"] = undefined
+    }
+    for (const key2 in teams) {
+        teams[key2]["active"] = 0
+    }
+    emitNet("reloadAll", -1)
 })
