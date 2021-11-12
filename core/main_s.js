@@ -39,10 +39,35 @@ Squad.isAdmin = function(plsource) {
    return false
 }
 
+Squad.getPlayer = function(plsource) {
+    for (const i in Squad.Players) {
+        if (Squad.Players[i].id == plsource) {
+            return Squad.Players[i]
+        }
+    }
+    return
+}
+
+Squad.getAllPlayers = function() {
+    return Squad.Players
+}
+
+
+Squad.removePlayer = function(source) {
+    for (const key in Squad.Players) {
+        if (Squad.Players[i].id == plsource) {
+            Squad.Players.splice(key, 1)
+        }
+    }
+}
+
 
 
 function PushPlayer(source) {
-    Squad.Players.push({id: source, name: GetPlayerName(source), active: false, dead: false, team: undefined})
+    //Squad.Players.push({id: source, name: GetPlayerName(source), active: false, dead: false, team: undefined})
+    const pl = new xPlayer(source, GetPlayerName(source))
+    Squad.Players.push(pl)
+
 }
 
 function GetPlayers() {

@@ -33,7 +33,7 @@ on('onClientMapStart', async () => {
         z: globalSettings["NeutralZone"]["spawnpoint"][2],
         model: globalSettings["NeutralZone"]["ped_model"]
     });
-    emitNet("PushPlayer", (source))
+    emitNet("sb:create_player", (source))
     await Wait(1000)
     activeNeutralArea = true
 })

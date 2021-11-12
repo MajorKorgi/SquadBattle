@@ -269,8 +269,8 @@ setTick(() => {
     Squad.Session.Preparing = false
     emitNet("LeaveArea", -1)
     for (const key in Squad.Players) {
-        Squad.Players[key]["active"] = false
-        Squad.Players[key]["team"] = undefined
+        Squad.Players[key].setActive(false)
+        Squad.Players[key].setTeam(undefined)
     }
     for (const key2 in teams) {
         teams[key2]["active"] = 0

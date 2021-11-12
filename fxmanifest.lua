@@ -16,7 +16,8 @@ client_scripts {
 server_scripts { 
     'core/main_sh.js',
     'config/languages/*.js',
-    'core/main_s.js', 
+    'core/main_s.js',
+    'core/server/classes/*.js',
     'core/server/*.js',
 }
 

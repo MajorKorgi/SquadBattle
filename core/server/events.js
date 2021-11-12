@@ -7,20 +7,19 @@ on("playerConnecting",async (name, setKickReason, deferrals) => {
     CancelEvent() */
 })
 
-onNet("PushPlayer", (source) => {
+onNet("sb:create_player", (source) => {
     PushPlayer(source)
     const isadmin = Squad.isAdmin(source)
     emitNet("sb:isadmin", source, isadmin)
 })
 
 on("playerDropped", (reason) => {
-    for (const key in Squad.Players) {
-        if (Squad.Players[key]["id"] == source) {
-            let team = Squad.Players[key]["team"]
-            teams[team]["active"] -= 1
-            Squad.Players.splice(key, 1)
-        }
-    }
+    const pl = Squad.getPlayer(source)
+    if (!pl) {return}
+    if (!teams[pl.team]) {return}
+
+    teams[pl.team]["active"] -= 1
+    Squad.removePlayer(source)
 });
 
 onNet("VehicleWasSpawned", async (currentTeam, target, key) => {
@@ -32,7 +31,7 @@ onNet("syncTargets", async (globalTargets, team) => {
     TargetSessions.push(globalTargets)
     TeamTargets.push(team)
     
-    let players = GetPlayers()
+    let players = Squad.getAllPlayers()
 
     for (const key in players) {
         for (const key2 in globalTargets) {
@@ -47,56 +46,48 @@ onNet("syncTargets", async (globalTargets, team) => {
 })
 
 onNet("sb:jointeam", (team) => {
-    let players = GetPlayers()
-    if (!Squad.Session.Active) {
-        for (const key in players) {
-            if (players[key]["id"] == source && players[key]["active"] == false) {
-                players[key]["active"] = true
-                let player = source
-    
-    
-                for (const key2 in teams) {
-                    if (team == key2 && (teams[key2]["active"] != settings["teams"]["slots"]) && teams[key2]["used"]) {
-                        players[key]["team"] = key2
-                        emitNet("SetHudInfo", player, key2)
-                        teams[key2]["active"] = teams[key2]["active"] + 1
-                    }
-                }
-                emitNet("SetMapBlips", player, teams)
-            }
+    let player = Squad.getPlayer(source)
+    if (player.active) {return}
+    if (Squad.Session.Active) {return}
+
+    player.setActive(true)
+
+    for (const t in teams) {
+        if (team == t && (teams[t]["active"] != settings["teams"]["slots"]) && teams[t]["used"]) {
+            player.setTeam(t)
+            emitNet("SetHudInfo", player.id, t)
+            teams[t]["active"] = teams[t]["active"] + 1
         }
-    } else {
-        //emitNet("ShowMessage", source, "Game is currently active, you can't join a team")
     }
+    emitNet("SetMapBlips", player, teams)
+    
+    //emitNet("ShowMessage", source, "Game is currently active, you can't join a team")
+
 })
 
 onNet("sb:leaveteam", () => {
-    let player = source
-    let players = GetPlayers()
+    let player = Squad.getPlayer(source)
+    if (!player) {return}
 
-    for (const key in players) {
-        
-        if (players[key]["id"] == player) {
-            for (const key2 in teams) {
-                if (players[key]["team"] == key2) {
-                    teams[key2]["active"] = teams[key2]["active"] - 1
-                }
-            }
-            players[key]["active"] = false
-            players[key]["team"] = undefined
-            emitNet("LeaveArea", player)
+    for (const t in teams) {
+        if (player.team == t) {
+            teams[t]["active"] = teams[t]["active"] - 1
         }
     }
+
+    player.setActive(false)
+    player.setTeam(undefined)
+    emitNet("LeaveArea", player.id)
 })
 
 onNet("sb:endgame", (source) => {
     if (Squad.isAdmin(source)) {
         Squad.Session.Active = false
         emitNet("LeaveArea", -1)
-        let players = GetPlayers()
+        let players = Squad.getAllPlayers ()
         for (const key in players) {
-            players[key]["active"] = false
-            players[key]["team"] = undefined
+            players[key].setActive(false)
+            players[key].setTeam(undefined)
         }
         for (const key2 in teams) {
             teams[key2]["active"] = 0
