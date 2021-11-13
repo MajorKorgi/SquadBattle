@@ -1,6 +1,6 @@
 //STATS
 setTick(async () => {
-    if (showStats) {
+    if (Squad.Settings.showStats) {
         let textTeams = "TEAMS"
         let ped = PlayerPedId()
         let health = GetEntityHealth(ped)
@@ -37,7 +37,7 @@ setTick(async () => {
 
 //COUNTDOWN
 setTick(async () => {
-    if (countdownActive) {
+    if (Squad.Session.countDown) {
         SetTextFont(0)
         SetTextProportional(1)
         SetTextScale(0.0, 1.0)
@@ -57,9 +57,9 @@ setTick(async () => {
             minimumIntegerDigits: 2,
             useGrouping: false
         })
-        if (activeNeutralArea) {
+        if (Squad.Session.neutralArea) {
             AddTextComponentString(`Countdown\n${countMinute}:${countSecond}`)
-        } else if (activePrepareArea) {
+        } else if (Squad.Session.prepareArea) {
             AddTextComponentString(`Prepare for Battle\n${countMinute}:${countSecond}`)
         } else {
             AddTextComponentString(`${countMinute}:${countSecond}`)
@@ -76,7 +76,7 @@ setTick(async () => {
     let coords = GetEntityCoords(ped)
     let model = GetEntityModel(ped)
     let pedVehicle = undefined
-    if (activeNeutralArea) {
+    /* if (Squad.Session.neutralArea) {
         ClearArea(coords[0], coords[1], coords[2], 50, false, false, false, false)
         
         if (!IsEntityInArea(ped, globalSettings["NeutralZone"]["spawnpoint"][0] -130, globalSettings["NeutralZone"]["spawnpoint"][1] -130, globalSettings["NeutralZone"]["spawnpoint"][2] - 10, globalSettings["NeutralZone"]["spawnpoint"][0] + 130, globalSettings["NeutralZone"]["spawnpoint"][1] + 130, globalSettings["NeutralZone"]["spawnpoint"][2] + 50)) {
@@ -88,7 +88,7 @@ setTick(async () => {
             });
             await Wait(2000)
         }
-    } else if (activePrepareArea) {
+    } else if (Squad.Session.prepareArea) {
         if (!IsEntityInArea(ped, globalTeams[currentTeam]["spawnpoint"][0] -130, globalTeams[currentTeam]["spawnpoint"][1] -130, globalTeams[currentTeam]["spawnpoint"][2] - 10,  globalTeams[currentTeam]["spawnpoint"][0] + 130,  globalTeams[currentTeam]["spawnpoint"][1] + 130,  globalTeams[currentTeam]["spawnpoint"][2] + 50)) {
             if (IsPedInAnyVehicle(ped)){
                 pedVehicle = GetVehiclePedIsIn(ped)
@@ -103,14 +103,14 @@ setTick(async () => {
             });
             await Wait(2000)
         }
-    }
+    } */
 })
 
 setTick(async () => {
-    if (activeNeutralArea) {
+    if (Squad.Session.neutralArea) {
         DrawMarker(1, globalSettings["NeutralZone"]["spawnpoint"][0], globalSettings["NeutralZone"]["spawnpoint"][1], globalSettings["NeutralZone"]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 150, 255, 255, 255, 180, false, false, 2, false, undefined, undefined, false)
         SetEntityInvincible(PlayerPedId(), true)
-    } else if (activePrepareArea) {
+    } else if (Squad.Session.prepareArea) {
         for (const key in globalTeams) {
             if (globalTeams[key]["used"]) {
                 DrawMarker(1, globalTeams[key]["spawnpoint"][0], globalTeams[key]["spawnpoint"][1], globalTeams[key]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 50, 255, 255, 255, 100, false, false, 2, false, undefined, undefined, false)
@@ -121,6 +121,7 @@ setTick(async () => {
 })
 
 setTick(async () => {
+    if (!Squad.Session.gameActive && !Squad.Session.prepareArea) {return}
     for (const key in globalMarkers) {
         const coord = globalMarkers[key]
         DrawMarker(2,coord[0],coord[1],coord[2] + 4, 0.0, 0.0, 0.0, 180.0, 0.0, 0.0, 2.0, 2.0, 2.0, 50, 50, 204, 255, true, false, 2, true, undefined, undefined, false)

@@ -61,13 +61,53 @@ Squad.removePlayer = function(source) {
     }
 }
 
+Squad.removeEntity = async function(netid) {
+    const entity = NetworkGetEntityFromNetworkId(netid)
+    while (DoesEntityExist(entity)) {
+        await Wait(100)
+        if (DoesEntityExist(entity)) {DeleteEntity(entity)}
+    }
+}
+
+Squad.endGame = async function() {
+    Squad.Session.Active = false
+    Squad.Session.Preparing = false
+    emitNet("LeaveArea", -1)
+    for (const key in Squad.Players) {
+        Squad.Players[key].setActive(false)
+        Squad.Players[key].setTeam(undefined)
+    }
+    for (const key2 in teams) {
+        teams[key2]["active"] = 0
+    }
+    emitNet("reloadAll", -1)
+
+    for (const k in TargetSessions) {
+        const val = TargetSessions[k]
+        for (const t in val) {
+            const obj = val[t]
+
+            if (obj["Nid"]) {
+                Squad.removeEntity(obj["Nid"])
+            }
+        }
+    }
+
+    for (const team in vehicles) {
+        for (const veh in vehicles[team]) {
+            if (vehicles[team][veh]["Nid"]) {
+                const obj = vehicles[team][veh]["Nid"]
+                Squad.removeEntity(obj)
+            }
+        }
+    }
+}
+
 
 
 function PushPlayer(source) {
-    //Squad.Players.push({id: source, name: GetPlayerName(source), active: false, dead: false, team: undefined})
     const pl = new xPlayer(source, GetPlayerName(source))
     Squad.Players.push(pl)
-
 }
 
 function GetPlayers() {

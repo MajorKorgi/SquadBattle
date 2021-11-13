@@ -120,6 +120,7 @@ setTick(async () => {
 })
 
 setTick(async () => {
+    if (!Squad.Session.Active) {return}
     const players = GetPlayers()
     for(const key in players) {
         for (const key2 in teams) {
@@ -134,7 +135,7 @@ setTick(async () => {
                             Distance = GetDistanceBetweenCoords(pedCoords[0], pedCoords[1], pedCoords[2], vehCoords[0], vehCoords[1], vehCoords[2])
                         }
                         
-                        if (Distance <= 200) {
+                        if (Distance <= 200 && Squad.Session.Active) {
                             emitNet('SpawnVehicle', players[key]["id"], vehicles[key2][key3], key3)
                             await Wait(1000)
                         }
@@ -149,6 +150,7 @@ setTick(async () => {
     }
 })
 setTick(async () => {
+    if (!Squad.Session.Active) {return}
     let players = GetPlayers()
     for (const key in targets) {
         if (targets[key]["spawned"] == false) {
@@ -162,7 +164,7 @@ setTick(async () => {
                     Distance = GetDistanceBetweenCoords(pedCoords[0], pedCoords[1], pedCoords[2], tarCoords[0], tarCoords[1], tarCoords[2])
                 }
     
-                if (Distance <= 50 && targets[key]["spawned"] == false) {
+                if (Distance <= 50 && targets[key]["spawned"] == false && Squad.Session.Active) {
                     SpawnTargets(targets[key], players[key2], key)
                     
                 }
@@ -236,6 +238,7 @@ setTick(async () => {
 }) */
 
 setInterval(async () => {
+    if (!Squad.Session.Active) {return}
     let players = GetPlayers()
     for (const key in players) {
         let markers = []
@@ -265,15 +268,5 @@ setTick(() => {
         }
     }
 
-    Squad.Session.Active = false
-    Squad.Session.Preparing = false
-    emitNet("LeaveArea", -1)
-    for (const key in Squad.Players) {
-        Squad.Players[key].setActive(false)
-        Squad.Players[key].setTeam(undefined)
-    }
-    for (const key2 in teams) {
-        teams[key2]["active"] = 0
-    }
-    emitNet("reloadAll", -1)
+    Squad.endGame()
 })

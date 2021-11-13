@@ -4,7 +4,7 @@ onNet("SetMapBlips",  async (teams) => {
             let team = teams[key]
         
             let blip = AddBlipForCoord(team["spawnpoint"][0], team["spawnpoint"][1], team["spawnpoint"][2])
-            AllBlips.push(blip)
+            AllBlips.push({"id": blip, "key": key})
             SetBlipSprite(blip, team["blip"]["sprite"])
             SetBlipDisplay(blip, 4)
             SetBlipScale(blip, team["blip"]["scale"])
@@ -16,7 +16,7 @@ onNet("SetMapBlips",  async (teams) => {
     } 
 
     let blip = AddBlipForCoord(686.42, 578.11, 130.46)
-    AllBlips.push(blip)
+    AllBlips.push({"id": blip})
     SetBlipSprite(blip, globalSettings["NeutralZone"]["blip"]["sprite"])
     SetBlipDisplay(blip, 4)
     SetBlipScale(blip, globalSettings["NeutralZone"]["blip"]["scale"])
@@ -36,13 +36,16 @@ onNet("LeaveArea",  async () => {
     });
 
     for (const key in AllBlips) {
-        RemoveBlip(AllBlips[key])
+        const val = AllBlips[key]
+        if (val["id"]) {
+            RemoveBlip(val["id"])
+        }
     }
 })
 
 onNet("onPlayerDeath", async () => {
     AnimpostfxPlay('DeathFailOut', 0, true)
-    if (currentTeam != undefined && globalSettings["teams"]["dropWeapons"] && !countdownActive) {
+    if (currentTeam != undefined && globalSettings["teams"]["dropWeapons"] && !Squad.Session.countDown) {
         for (const key in globalWeapons[currentTeam]) {
             SetPedDropsInventoryWeapon(PlayerPedId(), GetHashKey(globalWeapons[currentTeam][key]), 0.0, 0.0, 0.0, 500)
         }
@@ -95,15 +98,15 @@ onNet("SyncMarkerData", async (markers) => {
 
 onNet("StartCountdown", async (sec, min) => {
     await Wait(1000)
-    countdownActive = true
+    Squad.Session.countDown = true
 
 })
 
 onNet("CountDownFinished", async () => {
     
-    countdownActive = false
-    activeNeutralArea = false
-    activePrepareArea = true
+    Squad.Session.countDown = false
+    Squad.Session.neutralArea = false
+    Squad.Session.prepareArea = true
     teamdata = globalTeams[currentTeam]
     let spawnpoint = teamdata["spawnpoint"]
     let pedmodel = teamdata["ped_model"]
@@ -140,8 +143,9 @@ onNet("UpdateCountdown", async (min, sec) => {
 })
 
 onNet('PreCountDownFinished', async () => {
-    countdownActive = false
-    activePrepareArea = false
+    Squad.Session.countDown = false
+    Squad.Session.prepareArea = false
+    Squad.Session.gameActive = true
     
    
     SetEntityMaxHealth(PlayerPedId(), globalSettings["teams"]["health"])
@@ -215,8 +219,9 @@ onNet("SetHudInfo", async (teamname) => {
 onNet("SpawnVehicle", async (target, key) => {
     if (!IsAnyVehicleNearPoint(target["spawnpoint"][0], target["spawnpoint"][1], target["spawnpoint"][2], 10) && target["spawned"] < target["limit"]) {
         let vehmodel = target["spawnname"]
-        SpawnPlayerVehicle(vehmodel, target["spawnpoint"])
-        emitNet("VehicleWasSpawned", currentTeam, target, key)
+        SpawnPlayerVehicle(vehmodel, target["spawnpoint"], [], async function(vehicle, Nid, data) {
+            emitNet("sb:sync_teamvehicles", currentTeam, target, key, Nid)
+        })
     }
 })
 
@@ -386,7 +391,8 @@ onNet("reloadAll", async () => {
     });
     emitNet("sb:create_player", source)
     await Wait(1000)
-    activeNeutralArea = true
+    Squad.Session.neutralArea = true
+    Squad.Session.gameActive = false
 })
 
 onNet("targetDestroyed", async () => {

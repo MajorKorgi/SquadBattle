@@ -22,8 +22,9 @@ on("playerDropped", (reason) => {
     Squad.removePlayer(source)
 });
 
-onNet("VehicleWasSpawned", async (currentTeam, target, key) => {
+onNet("sb:sync_teamvehicles", async (currentTeam, target, key, Nid) => {
     vehicles[currentTeam][key]["spawned"] += 1
+    vehicles[currentTeam][key]["Nid"] = Nid
 })
 
 onNet("syncTargets", async (globalTargets, team) => {
@@ -82,16 +83,7 @@ onNet("sb:leaveteam", () => {
 
 onNet("sb:endgame", (source) => {
     if (Squad.isAdmin(source)) {
-        Squad.Session.Active = false
-        emitNet("LeaveArea", -1)
-        let players = Squad.getAllPlayers ()
-        for (const key in players) {
-            players[key].setActive(false)
-            players[key].setTeam(undefined)
-        }
-        for (const key2 in teams) {
-            teams[key2]["active"] = 0
-        }
+        Squad.endGame()
     }
 })
 

@@ -9,14 +9,21 @@ Squad = new Object()
 Squad.Player = new Object()
 Squad.Player.isAdmin = false
 
+Squad.Settings = new Object()
+Squad.Settings.showStats = true
+
+
+Squad.Session = new Object()
+Squad.Session.countDown = false
+Squad.Session.neutralArea = false
+Squad.Session.prepareArea = false
+Squad.Session.gameActive = false
+
 var currentTeam = undefined
 
 let countMinute = 0
 let countSecond = 0
 
-let countdownActive = false
-let activeNeutralArea = false
-let activePrepareArea = false
 
 let showStats = true
 
@@ -35,7 +42,7 @@ on('onClientMapStart', async () => {
     });
     emitNet("sb:create_player", (source))
     await Wait(1000)
-    activeNeutralArea = true
+    Squad.Session.neutralArea = true
 })
 
 onNet('playerSpawned', function() {

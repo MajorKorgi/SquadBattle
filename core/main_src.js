@@ -3,10 +3,12 @@ import * as Cfx from 'fivem-js';
 const MainMenu = new Cfx.Menu("SquadBattle", "PvP / PvE Battle")
 const AllTeamsMenu = new Cfx.Menu("All Teams", "Show all joinable Teams")
 const CurrentTeamMenu = new Cfx.Menu("Current Team", "Show Current Team")
+const SettingsMenu = new Cfx.Menu("Settings", "All Settings")
 const AdminMenu = new Cfx.Menu("Admin", "Adminoptions")
 
 const AllTeamItem = new Cfx.UIMenuItem("All Teams", "Show all joinable Teams")
 const CurrentTeamItem = new Cfx.UIMenuItem("Current Team", "Show Current Team")
+const SettingsItem = new Cfx.UIMenuItem("Settings", "All Settings")
 const AdminItem = new Cfx.UIMenuItem("Admin", "Adminoptions")
 
 const TeamMenuJoin = new Cfx.Menu("Team Options")
@@ -14,15 +16,18 @@ const TeamMenuLeave = new Cfx.Menu("Team Options")
 
 MainMenu.addItem(AllTeamItem)
 MainMenu.addItem(CurrentTeamItem)
+MainMenu.addItem(SettingsItem)
 MainMenu.addItem(AdminItem)
 
 MainMenu.bindMenuToItem(AllTeamsMenu, AllTeamItem)
 MainMenu.bindMenuToItem(CurrentTeamMenu, CurrentTeamItem)
+MainMenu.bindMenuToItem(SettingsMenu, SettingsItem)
 MainMenu.bindMenuToItem(AdminMenu, AdminItem)
 
 MainMenu.Settings.mouseControlsEnabled = false
 MainMenu.Settings.mouseEdgeEnabled = false
 MainMenu.Settings.resetCursorOnOpen = false
+MainMenu.Settings.controlDisablingEnabled = false
 
 MainMenu.menuOpen.on(() => {
     if (currentTeam) {
@@ -51,6 +56,15 @@ AdminEndGameItem.activated.on(() => {
 
 AdminReloadAllItem.activated.on(() => {
     emitNet("sb:reloadAll", GetPlayerServerId(GetPlayerIndex()))
+})
+
+
+const SettingsShowStatsItem = new Cfx.UIMenuCheckboxItem("Show Stats", true, "Turn on/off the top-left stats")
+
+SettingsMenu.addItem(SettingsShowStatsItem)
+
+SettingsShowStatsItem.checkboxChanged.on(() => {
+    Squad.Settings.showStats = SettingsShowStatsItem.Checked
 })
 
 
