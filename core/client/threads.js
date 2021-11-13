@@ -76,7 +76,7 @@ setTick(async () => {
     let coords = GetEntityCoords(ped)
     let model = GetEntityModel(ped)
     let pedVehicle = undefined
-    /* if (Squad.Session.neutralArea) {
+    if (Squad.Session.neutralArea) {
         ClearArea(coords[0], coords[1], coords[2], 50, false, false, false, false)
         
         if (!IsEntityInArea(ped, globalSettings["NeutralZone"]["spawnpoint"][0] -130, globalSettings["NeutralZone"]["spawnpoint"][1] -130, globalSettings["NeutralZone"]["spawnpoint"][2] - 10, globalSettings["NeutralZone"]["spawnpoint"][0] + 130, globalSettings["NeutralZone"]["spawnpoint"][1] + 130, globalSettings["NeutralZone"]["spawnpoint"][2] + 50)) {
@@ -103,7 +103,7 @@ setTick(async () => {
             });
             await Wait(2000)
         }
-    } */
+    }
 })
 
 setTick(async () => {
