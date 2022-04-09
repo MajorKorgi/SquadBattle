@@ -152,7 +152,6 @@ setTick(async () => {
 setTick(async () => {
     if (!Squad.Session.Active) {return}
     let players = GetPlayers()
-    //console.log(players.length)
     for (const key in targets) {
         
         if (targets[key]["spawned"] == false) {

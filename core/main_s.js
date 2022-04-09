@@ -7,18 +7,20 @@ var targets = []
 var pedtargets = require('./config/targets/pedtargets.json')
 var vehtargets = require('./config/targets/vehicletargets.json')
 
-var Squad = new Object()
+var Squad = {}
 
-Squad.Session = new Object()
+Squad.Session = {}
 Squad.Session.Active = false
 Squad.Session.Preparing = false
 
-Squad.Session.Targets = new Object()
+Squad.Session.Targets = {}
 Squad.Session.Targets.Ped = []
 Squad.Session.Targets.Vehicle = []
 Squad.Session.Targets.Object = []
 
 Squad.Players = []
+
+Squad.Callbacks = []
 
 var TargetSessions = []
 var TeamTargets = []
@@ -105,6 +107,15 @@ Squad.endGame = async function() {
 
 
 
+Squad.AddCallback = function(name, cb) {
+    Squad.Callbacks[name] = cb
+}
+
+Squad.RequestCallback = function(name, requestId, src, cb, ...args) {
+    if (!Squad.Callbacks[name]) {return}
+    Squad.Callbacks[name](src, cb, ...args)
+}
+
 function PushPlayer(source) {
     const pl = new xPlayer(source, GetPlayerName(source))
     Squad.Players.push(pl)
@@ -151,4 +162,3 @@ function GetPlayersIdentifier(source, identifier) {
     }
     return plid
 }
-

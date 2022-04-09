@@ -5,19 +5,22 @@ var globalWeapons = []
 var globalTargets = []
 var globalMarkers = []
 
-Squad = new Object()
-Squad.Player = new Object()
+Squad = {}
+Squad.Player =  {}
 Squad.Player.isAdmin = false
 
-Squad.Settings = new Object()
+Squad.Settings = {}
 Squad.Settings.showStats = true
 
 
-Squad.Session = new Object()
+Squad.Session = {}
 Squad.Session.countDown = false
 Squad.Session.neutralArea = false
 Squad.Session.prepareArea = false
 Squad.Session.gameActive = false
+
+Squad.Callbacks = []
+Squad.CallbackRequestId = []
 
 var currentTeam = undefined
 
@@ -42,6 +45,13 @@ Squad.Init = async function() {
     emitNet("sb:create_player", (source))
     await Wait(1000)
     Squad.Session.neutralArea = true
+}
+
+Squad.RequestCallback = function(name, cb, ...args) {
+    Squad.Callbacks[Squad.CallbackRequestId] = cb
+    emitNet("sb?triggerServerCallback", name, Squad.CallbackRequestId, ...args)
+
+    Squad.CallbackRequestId = (Squad.CallbackRequestId < 65535) ? Squad.CallbackRequestId + 1 : 0
 }
 
 

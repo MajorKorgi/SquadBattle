@@ -96,3 +96,11 @@ onNet("sb:reloadAll", (source) => {
         emitNet("reloadAll", -1)
     }
 })
+
+onNet("sb?triggerServerCallback", (name, requestId, ...args) => {
+    let source = global.source
+
+    Squad.RequestCallback(name, requestId, source,  function(...args) {
+        emitNet("sb?serverCallback", source, requestId, ...args)
+    }, ...args)
+})

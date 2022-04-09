@@ -410,3 +410,10 @@ onNet("targetDestroyed", async () => {
     SetTimeScale(1.0)
 })
 
+
+
+onNet("sb?serverCallback", (requestId, ...args) => {
+    if (Squad.Callbacks[requestId]) {
+        Squad.Callbacks[requestId](...args)
+    }
+})
