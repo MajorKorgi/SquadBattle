@@ -14,12 +14,16 @@ onNet("sb:create_player", (source) => {
 })
 
 on("playerDropped", (reason) => {
+    let source = global.source
+    let players = GetPlayers()
     const pl = Squad.getPlayer(source)
+    
     if (!pl) {return}
-    if (!teams[pl.team]) {return}
-
-    teams[pl.team]["active"] -= 1
     Squad.removePlayer(source)
+    players = GetPlayers()
+
+    if (!teams[pl.team]) {return}
+    teams[pl.team]["active"] -= 1
 });
 
 onNet("sb:sync_teamvehicles", async (currentTeam, target, key, Nid) => {

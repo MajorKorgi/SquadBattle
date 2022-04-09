@@ -6,13 +6,11 @@
         "MovesAround":false,
         "attackTeam": false,
         "WalkArea": 0.2,
-        "WalkPoints": [
-            {}
-        ],
         "multipleAmount": 3,
         "GiveWeapon": true,
         "weapon": "WEAPON_WRENCH",
         "spawned": false,
+        "destroyed": false,
         "team": "blue"
     },
 
@@ -23,13 +21,11 @@
         "MovesAround":false,
         "attackTeam": false,
         "WalkArea": 0.2,
-        "WalkPoints": [
-            {}
-        ],
         "multipleAmount": 3,
         "GiveWeapon": true,
         "weapon": "WEAPON_WRENCH",
         "spawned": false,
+        "destroyed": false,
         "team": "blue"
     },
 
@@ -40,13 +36,11 @@
         "MovesAround":false,
         "attackTeam": false,
         "WalkArea": 0.2,
-        "WalkPoints": [
-            {}
-        ],
         "multipleAmount": 3,
         "GiveWeapon": true,
         "weapon": "WEAPON_NIGHTSTICK",
         "spawned": false,
+        "destroyed": false,
         "team": "red"
     },
 
@@ -57,13 +51,11 @@
         "MovesAround":false,
         "attackTeam": false,
         "WalkArea": 0.2,
-        "WalkPoints": [
-            {}
-        ],
         "multipleAmount": 3,
         "GiveWeapon": true,
         "weapon": "WEAPON_NIGHTSTICK",
         "spawned": false,
+        "destroyed": false,
         "team": "red"
     }
 ]

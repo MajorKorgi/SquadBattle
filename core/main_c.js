@@ -26,13 +26,12 @@ let countSecond = 0
 
 
 let showStats = true
-
+let init = false
 let AllBlips =  []
 
 const [plretval, plhash] = AddRelationshipGroup("PLAYER")
 
-
-on('onClientMapStart', async () => {
+Squad.Init = async function() {
     let source = GetPlayerServerId(GetPlayerIndex())
     exports.spawnmanager.spawnPlayer({
         x: globalSettings["NeutralZone"]["spawnpoint"][0],
@@ -43,7 +42,18 @@ on('onClientMapStart', async () => {
     emitNet("sb:create_player", (source))
     await Wait(1000)
     Squad.Session.neutralArea = true
+}
+
+
+on('playerSpawned', async () => {
+    if (init) {return}
+    init = true
+    Squad.Init()
 })
+
+/* on('onClientMapStart', () => {
+    Squad.Init()
+}) */
 
 onNet('playerSpawned', function() {
     setTick(async () => {

@@ -53,9 +53,9 @@ Squad.getAllPlayers = function() {
 }
 
 
-Squad.removePlayer = function(source) {
+Squad.removePlayer = function(plsource) {
     for (const key in Squad.Players) {
-        if (Squad.Players[i].id == plsource) {
+        if (Squad.Players[key].id == plsource) {
             Squad.Players.splice(key, 1)
         }
     }

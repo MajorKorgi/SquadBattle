@@ -115,7 +115,7 @@ setTick(async () => {
             if (globalTeams[key]["used"]) {
                 DrawMarker(1, globalTeams[key]["spawnpoint"][0], globalTeams[key]["spawnpoint"][1], globalTeams[key]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 50, 255, 255, 255, 100, false, false, 2, false, undefined, undefined, false)
             }
-       }
+        }
         SetEntityInvincible(PlayerPedId(), true)
     }
 })

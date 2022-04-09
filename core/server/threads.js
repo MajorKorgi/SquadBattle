@@ -152,7 +152,9 @@ setTick(async () => {
 setTick(async () => {
     if (!Squad.Session.Active) {return}
     let players = GetPlayers()
+    //console.log(players.length)
     for (const key in targets) {
+        
         if (targets[key]["spawned"] == false) {
             for (const key2 in players) {
                 const ped = GetPlayerPed(players[key2]["id"])
@@ -166,9 +168,8 @@ setTick(async () => {
     
                 if (Distance <= 50 && targets[key]["spawned"] == false && Squad.Session.Active) {
                     SpawnTargets(targets[key], players[key2], key)
-                    
+                    await Wait(100)
                 }
-                await Wait(500)
             }
             
         }
