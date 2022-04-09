@@ -9,7 +9,8 @@
             "color": 1,
             "scale": 1.5,
             "name": "Worker"
-        }
+        },
+        "players": []
     }, 
     "blue": {
         "used":false,
@@ -21,6 +22,7 @@
             "color": 3,
             "scale": 1.5,
             "name": "Business"
-        }
+        },
+        "players": []
     }
 }

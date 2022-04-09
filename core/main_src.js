@@ -177,7 +177,9 @@ const SettingsShowStatsItem = new UIMenuCheckboxItem("Show Stats", true, "Turn o
 SettingsMenu.addItem(SettingsShowStatsItem)
 
 SettingsShowStatsItem.checkboxChanged.on(() => {
-    Squad.Settings.showStats = SettingsShowStatsItem.Checked
+    if (!SettingsShowStatsItem.Checked) {clearInterval(Squad.Runtime.Stats);return}
+    StartStatsRuntime()
+    //Squad.Settings.showStats = SettingsShowStatsItem.Checked
 })
 
 

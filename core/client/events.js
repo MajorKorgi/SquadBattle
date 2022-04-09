@@ -115,8 +115,8 @@ onNet("CountDownFinished", async () => {
 
 
     Squad.Session.countDown = false
-    Squad.Session.neutralArea = false
-    Squad.Session.prepareArea = true
+    clearInterval(Squad.Runtime.neutralArea)
+    StartPrepareAreaRuntime()
     teamdata = globalTeams[currentTeam]
     let spawnpoint = teamdata["spawnpoint"]
     let pedmodel = teamdata["ped_model"]
@@ -157,7 +157,7 @@ onNet('PreCountDownFinished', async () => {
     const globalTargets = await Squad.RequestTargets()
     
     Squad.Session.countDown = false
-    Squad.Session.prepareArea = false
+    clearInterval(Squad.Runtime.prepareArea)
     Squad.Session.gameActive = true
     
    
