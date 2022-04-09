@@ -28,6 +28,10 @@ onNet("SetMapBlips",  async (teams) => {
     EndTextCommandSetBlipName(blip)
 })
 
+onNet("sb!updateTeamPlayers", async (team, newActive) => {
+    Squad.Session.TeamData[team].players = newActive
+})
+
 onNet("LeaveArea",  async () => {
     const globalSettings = await Squad.RequestSettings()
 

@@ -4,7 +4,7 @@ game 'gta5'
 author 'Korgron'
 description 'SquadBattle'
 
-version '0.1.11'
+version '0.1.12'
 
 client_scripts {
     'core/main_sh.js',

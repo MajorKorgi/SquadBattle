@@ -15,9 +15,8 @@ Squad.Settings.showStats = true
 
 Squad.Session = {}
 Squad.Session.countDown = false
-Squad.Session.neutralArea = false
-Squad.Session.prepareArea = false
 Squad.Session.gameActive = false
+Squad.Session.TeamData = []
 
 Squad.Callbacks = []
 Squad.CallbackRequestId = []
@@ -44,6 +43,16 @@ const [plretval, plhash] = AddRelationshipGroup("PLAYER")
 
 Squad.Init = async function() {
     const globalSettings = await Squad.RequestSettings()
+    const globalTeams = await Squad.RequestTeams()
+
+    for (const key in globalTeams) {
+        if (globalTeams[key]["used"])
+        Squad.Session.TeamData[key] = {
+            players: 0,
+            name: globalTeams[key]["blip"]["name"],
+            slots: globalSettings["teams"]["slots"]
+        }
+    }
     
     if (Squad.Runtime.Attack) {
         clearInterval(Squad.Runtime.Attack)
@@ -247,7 +256,7 @@ function setRelationshipToEveryone(relationship, hash) {
 }
 
 //STATS
-function StartStatsRuntime() {
+async function StartStatsRuntime() {
     Squad.Runtime.Stats = setInterval(() => {
         let textTeams = "TEAMS"
         let ped = PlayerPedId()
@@ -265,10 +274,8 @@ function StartStatsRuntime() {
         SetTextEntry("STRING")
         
         if (currentTeam == undefined) {
-            for (const key in globalTeams2) {
-                if (globalTeams2[key]["used"]) {
-                    textTeams = textTeams + `\n - [${key}] ${globalTeams2[key]["blip"]["name"]} Slots: ${globalTeams2[key]["active"]}/${globalSettings2["teams"]["slots"] }`
-                }
+            for (const key in Squad.Session.TeamData) {
+                textTeams = textTeams + `\n - [${key}] ${Squad.Session.TeamData[key].name} Slots: ${Squad.Session.TeamData[key].players}/${Squad.Session.TeamData[key].slots}`
             }
             AddTextComponentString(textTeams)
         } else {
@@ -453,6 +460,15 @@ Squad.RequestPlayers = () => {
     return new Promise((resolve, reject) => {
         Squad.RequestCallback("sb?requestPlayers", (obj) => {
             if (!obj) {reject("Players not found")}
+            resolve(obj)
+        })
+    })
+}
+
+Squad.RequestPlayerData = () => {
+    return new Promise((resolve, reject) => {
+        Squad.RequestCallback("sb?requetPlayer", (obj) => {
+            if (!obj) {reject("Playerdata not found")}
             resolve(obj)
         })
     })

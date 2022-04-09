@@ -191,6 +191,16 @@ Squad.AddCallback("sb?requestPlayers", (src, cb) => {
     cb(Squad.Players)
 })
 
+Squad.AddCallback("sb?requetPlayer", (src, cb) => {
+    let player = undefined
+    for (const key in Squad.Players) {
+        if (Squad.Players[key].id == src) {
+            cb(Squad.Players[key])
+            return
+        }
+    }
+})
+
 Squad.AddCallback("sb?requestAdmin", (src, cb) => {
     cb(Squad.isAdmin(src))
 })

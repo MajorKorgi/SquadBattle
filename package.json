@@ -1,6 +1,6 @@
 {
   "name": "squadbattle",
-  "version": "1.0.0",
+  "version": "0.1.12",
   "description": "FiveM script/game mode for playing Team deathmatches",
   "main": "index.js",
   "scripts": {

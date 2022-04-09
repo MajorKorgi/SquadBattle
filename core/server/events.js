@@ -50,6 +50,7 @@ onNet("syncTargets", async (globalTargets, team) => {
 
 onNet("sb:jointeam", (team) => {
     let player = Squad.getPlayer(source)
+    let newActive = 0
     if (player.active) {return}
     if (Squad.Session.Active) {return}
 
@@ -60,9 +61,11 @@ onNet("sb:jointeam", (team) => {
             player.setTeam(t)
             emitNet("SetHudInfo", player.id, t)
             teams[t]["active"] = teams[t]["active"] + 1
+            newActive = teams[t]["active"]
         }
     }
     emitNet("SetMapBlips", player, teams)
+    emitNet("sb!updateTeamPlayers", -1, team, newActive)
     
     //emitNet("ShowMessage", source, "Game is currently active, you can't join a team")
 
@@ -70,17 +73,20 @@ onNet("sb:jointeam", (team) => {
 
 onNet("sb:leaveteam", () => {
     let player = Squad.getPlayer(source)
+    let newActive = 0
     if (!player) {return}
 
     for (const t in teams) {
         if (player.team == t) {
             teams[t]["active"] = teams[t]["active"] - 1
+            newActive = teams[t]["active"]
         }
     }
 
     player.setActive(false)
     player.setTeam(undefined)
     emitNet("LeaveArea", player.id)
+    emitNet("sb!updateTeamPlayers", -1, player.team, newActive)
 })
 
 onNet("sb:endgame", (source) => {
