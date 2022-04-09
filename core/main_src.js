@@ -182,7 +182,11 @@ SettingsShowStatsItem.checkboxChanged.on(() => {
 
 
 //#region Main
-function InitializeMenu() {
+async function InitializeMenu() {
+    const globalTeams = await Squad.RequestTeams()
+    const globalSettings = await Squad.RequestSettings()
+    const isAdmin = await Squad.RequestAdminStatus()
+
     AllTeamsMenu.clear()
     CurrentTeamMenu.clear()
     TeamMenuJoin.clear()
@@ -218,7 +222,7 @@ function InitializeMenu() {
         }
     }
 
-    if (Squad.Player.isAdmin) {
+    if (isAdmin) {
         AdminItem.enabled = true
     } else {
         AdminItem.enabled = false

@@ -7,6 +7,13 @@ var targets = []
 var pedtargets = require('./config/targets/pedtargets.json')
 var vehtargets = require('./config/targets/vehicletargets.json')
 
+for (const key in pedtargets) {
+    targets.push(pedtargets[key])
+}
+for (const key in vehtargets) {
+    targets.push(vehtargets[key])
+}
+
 var Squad = {}
 
 Squad.Session = {}
@@ -24,13 +31,6 @@ Squad.Callbacks = []
 
 var TargetSessions = []
 var TeamTargets = []
-
-for (const key in pedtargets) {
-    targets.push(pedtargets[key])
-}
-for (const key in vehtargets) {
-    targets.push(vehtargets[key])
-}
 
 Squad.isAdmin = function(plsource) {
     for (const key in settings["admins"]) {
@@ -162,3 +162,35 @@ function GetPlayersIdentifier(source, identifier) {
     }
     return plid
 }
+
+
+
+
+
+Squad.AddCallback("sb?requestSettings", (src, cb) => {
+    cb(settings)
+})
+
+Squad.AddCallback("sb?requestTeams", (src, cb) => {
+    cb(teams)
+})
+
+Squad.AddCallback("sb?requestVehicles", (src, cb) => {
+    cb(vehicles)
+})
+
+Squad.AddCallback("sb?requestWeapons", (src, cb) => {
+    cb(weapons)
+})
+
+Squad.AddCallback("sb?requestTargets", (src, cb) => {
+    cb(targets)
+})
+
+Squad.AddCallback("sb?requestPlayers", (src, cb) => {
+    cb(Squad.Players)
+})
+
+Squad.AddCallback("sb?requestAdmin", (src, cb) => {
+    cb(Squad.isAdmin(src))
+})

@@ -1,13 +1,13 @@
-var globalTeams = []
-var globalPlayers = []
-var globalSettings = []
-var globalWeapons = []
-var globalTargets = []
+var globalTeams2 = []
+var globalPlayers2 = []
+var globalSettings2 = []
+var globalWeapons2 = []
+var globalTargets2 = []
 var globalMarkers = []
+
 
 Squad = {}
 Squad.Player =  {}
-Squad.Player.isAdmin = false
 
 Squad.Settings = {}
 Squad.Settings.showStats = true
@@ -22,6 +22,9 @@ Squad.Session.gameActive = false
 Squad.Callbacks = []
 Squad.CallbackRequestId = []
 
+Squad.initialized = false
+Squad.AttackRuntime = false
+
 var currentTeam = undefined
 
 let countMinute = 0
@@ -35,6 +38,20 @@ let AllBlips =  []
 const [plretval, plhash] = AddRelationshipGroup("PLAYER")
 
 Squad.Init = async function() {
+    const globalSettings = await Squad.RequestSettings()
+    
+    if (Squad.AttackRuntime) {
+        clearInterval(Squad.AttackRuntime)
+        Squad.AttackRuntime = undefined
+    }
+    Squad.AttackRuntime = setInterval(() => {
+        console.log(int)
+        let playerPed = GetPlayerPed(-1)
+        
+        NetworkSetFriendlyFireOption(true)
+        SetCanAttackFriendly(playerPed, true, true)
+    })
+
     let source = GetPlayerServerId(GetPlayerIndex())
     exports.spawnmanager.spawnPlayer({
         x: globalSettings["NeutralZone"]["spawnpoint"][0],
@@ -54,28 +71,10 @@ Squad.RequestCallback = function(name, cb, ...args) {
     Squad.CallbackRequestId = (Squad.CallbackRequestId < 65535) ? Squad.CallbackRequestId + 1 : 0
 }
 
-
 on('playerSpawned', async () => {
-    if (init) {return}
-    init = true
+    if (Squad.initialized) {return}
+    Squad.initialized = true
     Squad.Init()
-})
-
-/* on('onClientMapStart', () => {
-    Squad.Init()
-}) */
-
-onNet('playerSpawned', function() {
-    setTick(async () => {
-        let playerPed = GetPlayerPed(-1)
-        
-        NetworkSetFriendlyFireOption(true)
-        SetCanAttackFriendly(playerPed, true, true)
-    })
-})
-
-onNet("sb:isadmin", (isAdminBool) => {
-    Squad.Player.isAdmin = isAdminBool
 })
 
 async function SpawnPlayerVehicle(modelName, coords, data, cb) {
@@ -241,4 +240,70 @@ function setRelationshipToEveryone(relationship, hash) {
 
     SetRelationshipBetweenGroups(relationship, hash, 0x31E50E10)
     SetRelationshipBetweenGroups(relationship, 0x31E50E10, hash)
+}
+
+
+
+
+Squad.RequestSettings = () => {
+    return new Promise((resolve, reject) => {
+        Squad.RequestCallback("sb?requestSettings", (obj) => {
+            if (!obj) {reject("Settings not found")}
+            resolve(obj)
+        })
+    })
+}
+
+Squad.RequestTeams = () => {
+    return new Promise((resolve, reject) => {
+        Squad.RequestCallback("sb?requestTeams", (obj) => {
+            if (!obj) {reject("Teams not found")}
+            resolve(obj)
+        })
+    })
+}
+
+Squad.RequestVehicles = () => {
+    return new Promise((resolve, reject) => {
+        Squad.RequestCallback("sb?requestVehicles", (obj) => {
+            if (!obj) {reject("Vehicles not found")}
+            resolve(obj)
+        })
+    })
+}
+
+Squad.RequestWeapons = () => {
+    return new Promise((resolve, reject) => {
+        Squad.RequestCallback("sb?requestWeapons", (obj) => {
+            if (!obj) {reject("Weapons not found")}
+            resolve(obj)
+        })
+    })
+}
+
+Squad.RequestTargets = () => {
+    return new Promise((resolve, reject) => {
+        Squad.RequestCallback("sb?requestTargets", (obj) => {
+            if (!obj) {reject("Targets not found")}
+            resolve(obj)
+        })
+    })
+}
+
+Squad.RequestPlayers = () => {
+    return new Promise((resolve, reject) => {
+        Squad.RequestCallback("sb?requestPlayers", (obj) => {
+            if (!obj) {reject("Players not found")}
+            resolve(obj)
+        })
+    })
+}
+
+Squad.RequestAdminStatus = () => {
+    return new Promise((resolve, reject) => {
+        Squad.RequestCallback("sb?requestAdmin", (obj) => {
+            if (!obj) {reject("Adminstatus not found")}
+            resolve(obj)
+        })
+    })
 }

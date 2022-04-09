@@ -1,4 +1,6 @@
 onNet("SetMapBlips",  async (teams) => {
+    const globalSettings = await Squad.RequestSettings()
+    
     for (const key in teams) {
         if(teams[key]["used"]) {
             let team = teams[key]
@@ -27,6 +29,8 @@ onNet("SetMapBlips",  async (teams) => {
 })
 
 onNet("LeaveArea",  async () => {
+    const globalSettings = await Squad.RequestSettings()
+
     currentTeam = undefined
     exports.spawnmanager.spawnPlayer({
         x: globalSettings["NeutralZone"]["spawnpoint"][0],
@@ -44,6 +48,10 @@ onNet("LeaveArea",  async () => {
 })
 
 onNet("onPlayerDeath", async () => {
+    const globalSettings = await Squad.RequestSettings()
+    const globalTeams = await Squad.RequestTeams()
+    const globalWeapons = await Squad.RequestWeapons()
+
     AnimpostfxPlay('DeathFailOut', 0, true)
     if (currentTeam != undefined && globalSettings["teams"]["dropWeapons"] && !Squad.Session.countDown) {
         for (const key in globalWeapons[currentTeam]) {
@@ -84,12 +92,10 @@ onNet("onPlayerRevive", async () => {
     AnimpostfxStop('DeathFailOut')
 })
 
-onNet("SyncData", async (teams, players, settings, weapons, targets) => {
-    globalTeams = teams
-    globalPlayers = players
-    globalSettings = settings
-    globalWeapons = weapons
-    globalTargets = targets
+onNet("SyncData", async (teams, players, settings) => {
+    globalTeams2 = teams
+    globalPlayers2 = players
+    globalSettings2 = settings
 })
 
 onNet("SyncMarkerData", async (markers) => {
@@ -103,7 +109,11 @@ onNet("StartCountdown", async (sec, min) => {
 })
 
 onNet("CountDownFinished", async () => {
-    
+    const globalTeams = await Squad.RequestTeams()
+    const globalWeapons = await Squad.RequestWeapons()
+    const globalPlayers = await Squad.RequestPlayers()
+
+
     Squad.Session.countDown = false
     Squad.Session.neutralArea = false
     Squad.Session.prepareArea = true
@@ -143,6 +153,9 @@ onNet("UpdateCountdown", async (min, sec) => {
 })
 
 onNet('PreCountDownFinished', async () => {
+    const globalSettings = await Squad.RequestSettings()
+    const globalTargets = await Squad.RequestTargets()
+    
     Squad.Session.countDown = false
     Squad.Session.prepareArea = false
     Squad.Session.gameActive = true
@@ -200,6 +213,8 @@ onNet('PreCountDownFinished', async () => {
 })
 
 onNet("SetHudInfo", async (teamname) => {
+    const globalTeams = await Squad.RequestTeams()
+    
     currentTeam = teamname
     let ped = PlayerPedId()
     let coords = GetEntityCoords(ped)
@@ -382,17 +397,8 @@ onNet("setTargetBlipsFriendly", async (target) => {
 
 
 onNet("reloadAll", async () => {
-    let source = GetPlayerServerId(GetPlayerIndex())
-    exports.spawnmanager.spawnPlayer({
-        x: globalSettings["NeutralZone"]["spawnpoint"][0],
-        y: globalSettings["NeutralZone"]["spawnpoint"][1],
-        z: globalSettings["NeutralZone"]["spawnpoint"][2],
-        model: globalSettings["NeutralZone"]["ped_model"]
-    });
-    emitNet("sb:create_player", source)
-    await Wait(1000)
-    Squad.Session.neutralArea = true
-    Squad.Session.gameActive = false
+    Squad.initialized = true
+    Squad.Init()
 })
 
 onNet("targetDestroyed", async () => {

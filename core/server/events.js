@@ -9,8 +9,6 @@ on("playerConnecting",async (name, setKickReason, deferrals) => {
 
 onNet("sb:create_player", (source) => {
     PushPlayer(source)
-    const isadmin = Squad.isAdmin(source)
-    emitNet("sb:isadmin", source, isadmin)
 })
 
 on("playerDropped", (reason) => {

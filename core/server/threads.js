@@ -25,7 +25,7 @@ setInterval(async () => {
 }, 500)
 
 setInterval(() => {
-    emitNet("SyncData", -1, teams, Squad.Players, settings, weapons, targets)
+    emitNet("SyncData", -1, teams, Squad.Players, settings)
 }, 1000)
 
 setTick(async () => {

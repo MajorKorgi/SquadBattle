@@ -9,7 +9,7 @@ version '0.1.1'
 client_scripts {
     'core/main_sh.js',
     'config/languages/*.js',
-    'core/main_c.js', 
+    'core/main_c.js',
     'core/client/*.js',
 }
 

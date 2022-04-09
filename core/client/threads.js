@@ -17,16 +17,16 @@ setTick(async () => {
         SetTextEntry("STRING")
         
         if (currentTeam == undefined) {
-            for (const key in globalTeams) {
-                if (globalTeams[key]["used"]) {
-                    textTeams = textTeams + `\n - [${key}] ${globalTeams[key]["blip"]["name"]} Slots: ${globalTeams[key]["active"]}/${globalSettings["teams"]["slots"] }`
+            for (const key in globalTeams2) {
+                if (globalTeams2[key]["used"]) {
+                    textTeams = textTeams + `\n - [${key}] ${globalTeams2[key]["blip"]["name"]} Slots: ${globalTeams2[key]["active"]}/${globalSettings2["teams"]["slots"] }`
                 }
             }
             AddTextComponentString(textTeams)
         } else {
-            for (const key in globalPlayers) {
-                if (globalPlayers[key]["team"] == currentTeam) {
-                    textPlayers = textPlayers + `\n - [${globalPlayers[key]["id"]}] ${globalPlayers[key]["name"]}`
+            for (const key in globalPlayers2) {
+                if (globalPlayers2[key]["team"] == currentTeam) {
+                    textPlayers = textPlayers + `\n - [${globalPlayers2[key]["id"]}] ${globalPlayers2[key]["name"]}`
                 }
             }
             AddTextComponentString(textPlayers)
@@ -79,27 +79,27 @@ setTick(async () => {
     if (Squad.Session.neutralArea) {
         ClearArea(coords[0], coords[1], coords[2], 50, false, false, false, false)
         
-        if (!IsEntityInArea(ped, globalSettings["NeutralZone"]["spawnpoint"][0] -130, globalSettings["NeutralZone"]["spawnpoint"][1] -130, globalSettings["NeutralZone"]["spawnpoint"][2] - 10, globalSettings["NeutralZone"]["spawnpoint"][0] + 130, globalSettings["NeutralZone"]["spawnpoint"][1] + 130, globalSettings["NeutralZone"]["spawnpoint"][2] + 50)) {
+        if (!IsEntityInArea(ped, globalSettings2["NeutralZone"]["spawnpoint"][0] -130, globalSettings2["NeutralZone"]["spawnpoint"][1] -130, globalSettings2["NeutralZone"]["spawnpoint"][2] - 10, globalSettings2["NeutralZone"]["spawnpoint"][0] + 130, globalSettings2["NeutralZone"]["spawnpoint"][1] + 130, globalSettings2["NeutralZone"]["spawnpoint"][2] + 50)) {
             exports.spawnmanager.spawnPlayer({
-                x: globalSettings["NeutralZone"]["spawnpoint"][0],
-                y: globalSettings["NeutralZone"]["spawnpoint"][1],
-                z: globalSettings["NeutralZone"]["spawnpoint"][2],
+                x: globalSettings2["NeutralZone"]["spawnpoint"][0],
+                y: globalSettings2["NeutralZone"]["spawnpoint"][1],
+                z: globalSettings2["NeutralZone"]["spawnpoint"][2],
                 model: model
             });
             await Wait(2000)
         }
     } else if (Squad.Session.prepareArea) {
-        if (!IsEntityInArea(ped, globalTeams[currentTeam]["spawnpoint"][0] -130, globalTeams[currentTeam]["spawnpoint"][1] -130, globalTeams[currentTeam]["spawnpoint"][2] - 10,  globalTeams[currentTeam]["spawnpoint"][0] + 130,  globalTeams[currentTeam]["spawnpoint"][1] + 130,  globalTeams[currentTeam]["spawnpoint"][2] + 50)) {
+        if (!IsEntityInArea(ped, globalTeams2[currentTeam]["spawnpoint"][0] -130, globalTeams2[currentTeam]["spawnpoint"][1] -130, globalTeams2[currentTeam]["spawnpoint"][2] - 10,  globalTeams2[currentTeam]["spawnpoint"][0] + 130,  globalTeams2[currentTeam]["spawnpoint"][1] + 130,  globalTeams2[currentTeam]["spawnpoint"][2] + 50)) {
             if (IsPedInAnyVehicle(ped)){
                 pedVehicle = GetVehiclePedIsIn(ped)
                 SetEntityAsMissionEntity(pedVehicle, false, true)
                 DeleteVehicle(pedVehicle)
             }
             exports.spawnmanager.spawnPlayer({
-                x: globalTeams[currentTeam]["spawnpoint"][0],
-                y: globalTeams[currentTeam]["spawnpoint"][1],
-                z: globalTeams[currentTeam]["spawnpoint"][2],
-                model: globalTeams[currentTeam]["ped_model"]
+                x: globalTeams2[currentTeam]["spawnpoint"][0],
+                y: globalTeams2[currentTeam]["spawnpoint"][1],
+                z: globalTeams2[currentTeam]["spawnpoint"][2],
+                model: globalTeams2[currentTeam]["ped_model"]
             });
             await Wait(2000)
         }
@@ -108,12 +108,12 @@ setTick(async () => {
 
 setTick(async () => {
     if (Squad.Session.neutralArea) {
-        DrawMarker(1, globalSettings["NeutralZone"]["spawnpoint"][0], globalSettings["NeutralZone"]["spawnpoint"][1], globalSettings["NeutralZone"]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 150, 255, 255, 255, 180, false, false, 2, false, undefined, undefined, false)
+        DrawMarker(1, globalSettings2["NeutralZone"]["spawnpoint"][0], globalSettings2["NeutralZone"]["spawnpoint"][1], globalSettings2["NeutralZone"]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 150, 255, 255, 255, 180, false, false, 2, false, undefined, undefined, false)
         SetEntityInvincible(PlayerPedId(), true)
     } else if (Squad.Session.prepareArea) {
-        for (const key in globalTeams) {
-            if (globalTeams[key]["used"]) {
-                DrawMarker(1, globalTeams[key]["spawnpoint"][0], globalTeams[key]["spawnpoint"][1], globalTeams[key]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 50, 255, 255, 255, 100, false, false, 2, false, undefined, undefined, false)
+        for (const key in globalTeams2) {
+            if (globalTeams2[key]["used"]) {
+                DrawMarker(1, globalTeams2[key]["spawnpoint"][0], globalTeams2[key]["spawnpoint"][1], globalTeams2[key]["spawnpoint"][2] - 10, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 270, 270, 50, 255, 255, 255, 100, false, false, 2, false, undefined, undefined, false)
             }
         }
         SetEntityInvincible(PlayerPedId(), true)
