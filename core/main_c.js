@@ -46,14 +46,12 @@ Squad.Init = async function() {
     const globalTeams = await Squad.RequestTeams()
 
     for (const key in globalTeams) {
-        console.log(key)
         if (globalTeams[key]["used"])
         Squad.Session.TeamData[key] = {
             players: 0,
             name: globalTeams[key]["blip"]["name"],
             slots: globalSettings["teams"]["slots"]
         }
-        console.log(Squad.Session.TeamData[key])
     }
     
     if (Squad.Runtime.Attack) {
