@@ -46,12 +46,14 @@ Squad.Init = async function() {
     const globalTeams = await Squad.RequestTeams()
 
     for (const key in globalTeams) {
+        console.log(key)
         if (globalTeams[key]["used"])
         Squad.Session.TeamData[key] = {
             players: 0,
             name: globalTeams[key]["blip"]["name"],
             slots: globalSettings["teams"]["slots"]
         }
+        console.log(Squad.Session.TeamData[key])
     }
     
     if (Squad.Runtime.Attack) {
@@ -414,7 +416,7 @@ setTick(async () => {
 Squad.RequestSettings = () => {
     return new Promise((resolve, reject) => {
         Squad.RequestCallback("sb?requestSettings", (obj) => {
-            if (!obj) {reject("Settings not found")}
+            if (obj == undefined) {reject("Settings not found")}
             resolve(obj)
         })
     })
@@ -423,7 +425,7 @@ Squad.RequestSettings = () => {
 Squad.RequestTeams = () => {
     return new Promise((resolve, reject) => {
         Squad.RequestCallback("sb?requestTeams", (obj) => {
-            if (!obj) {reject("Teams not found")}
+            if (obj == undefined) {reject("Teams not found")}
             resolve(obj)
         })
     })
@@ -432,7 +434,7 @@ Squad.RequestTeams = () => {
 Squad.RequestVehicles = () => {
     return new Promise((resolve, reject) => {
         Squad.RequestCallback("sb?requestVehicles", (obj) => {
-            if (!obj) {reject("Vehicles not found")}
+            if (obj == undefined) {reject("Vehicles not found")}
             resolve(obj)
         })
     })
@@ -441,7 +443,7 @@ Squad.RequestVehicles = () => {
 Squad.RequestWeapons = () => {
     return new Promise((resolve, reject) => {
         Squad.RequestCallback("sb?requestWeapons", (obj) => {
-            if (!obj) {reject("Weapons not found")}
+            if (obj == undefined) {reject("Weapons not found")}
             resolve(obj)
         })
     })
@@ -450,7 +452,7 @@ Squad.RequestWeapons = () => {
 Squad.RequestTargets = () => {
     return new Promise((resolve, reject) => {
         Squad.RequestCallback("sb?requestTargets", (obj) => {
-            if (!obj) {reject("Targets not found")}
+            if (obj == undefined) {reject("Targets not found")}
             resolve(obj)
         })
     })
@@ -459,7 +461,7 @@ Squad.RequestTargets = () => {
 Squad.RequestPlayers = () => {
     return new Promise((resolve, reject) => {
         Squad.RequestCallback("sb?requestPlayers", (obj) => {
-            if (!obj) {reject("Players not found")}
+            if (obj == undefined) {reject("Players not found")}
             resolve(obj)
         })
     })
@@ -468,7 +470,7 @@ Squad.RequestPlayers = () => {
 Squad.RequestPlayerData = () => {
     return new Promise((resolve, reject) => {
         Squad.RequestCallback("sb?requetPlayer", (obj) => {
-            if (!obj) {reject("Playerdata not found")}
+            if (obj == undefined) {reject("Playerdata not found")}
             resolve(obj)
         })
     })
@@ -477,7 +479,7 @@ Squad.RequestPlayerData = () => {
 Squad.RequestAdminStatus = () => {
     return new Promise((resolve, reject) => {
         Squad.RequestCallback("sb?requestAdmin", (obj) => {
-            if (!obj) {reject("Adminstatus not found")}
+            if (obj == undefined) {reject("Adminstatus not found")}
             resolve(obj)
         })
     })

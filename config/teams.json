@@ -13,7 +13,7 @@
         "players": []
     }, 
     "blue": {
-        "used":false,
+        "used":true,
         "spawnpoint": [795.12, -1611.76, 31.41],
         "active": 0,
         "ped_model": "a_m_y_business_03",

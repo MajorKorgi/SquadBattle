@@ -29,6 +29,7 @@ onNet("SetMapBlips",  async (teams) => {
 })
 
 onNet("sb!updateTeamPlayers", async (team, newActive) => {
+    if (team == undefined) {return}
     Squad.Session.TeamData[team].players = newActive
 })
 
@@ -277,13 +278,13 @@ onNet("SpawnVehicleTarget", async (target, id) =>{
                         TaskWarpPedIntoVehicle(ped, vehicle, -1)
                         await Wait(1)
                     }
+
+                    if (target["vehicleamount"] > 1 || target["MovesAround"]) {
+                        TaskVehicleDriveWander(ped, vehicle,data["maxSpeed"], data["driveStyle"])
+                        time = 3500
+                    }  
                 }
-                
-                if (target["vehicleamount"] > 1 || target["MovesAround"]) {
-                    TaskVehicleDriveWander(ped, vehicle,data["maxSpeed"], data["driveStyle"])
-                    time = 3500
-                }  
-                
+
                 targetVehicles.push({team: target["team"], Nid: Nid, Nid2: Nid2, attack: target["attackTeam"]})
                 emitNet("syncTargets", targetVehicles, target["team"])
             })
